@@ -1,0 +1,2554 @@
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--space-16) + var(--space-6));
+}
+
+body {
+  margin: 0;
+  background: var(--bg-page);
+  color: var(--text-strong);
+  font-family: var(--font-sans);
+}
+
+.sv-page {
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: var(--bg-page);
+}
+
+.sv-hero {
+  /* Hoehe der festen Kopfzeile je Breite (mockup-entwurf.css: 82 / 74 / 66px)
+     und die Luft darueber und darunter — ueberall wie auf der FAQ-Seite
+     (26.09.2026, André): dort standen bei 1440×900 71px unter der Kopfzeile
+     und 79px unter dem Bot. Auf niedrigen Bildschirmen schrumpft die Luft mit,
+     damit der Kopf trotzdem auf den Bildschirm passt. */
+  --kopfzeile: 82px;
+  --kopf-luft: clamp(20px, calc(16svh - 72px), 72px);          /* 900px Hoehe: 72, 720: 43 */
+  --kopf-luft-unten: clamp(24px, calc(16svh - 64px), 80px);    /* 900px Hoehe: 80, 720: 51 */
+  position: relative;
+  /* Bildschirmhoch auf jeder Seite (26.09.2026): Wer eine Seite oeffnet, sieht
+     den ganzen Terracotta-Kopf und nichts darunter. svh statt dvh, damit er
+     auf dem iPhone auch mit eingeblendeten Leisten ganz sichtbar ist und nicht
+     springt, wenn sie verschwinden. Vorher: max(740px, 88svh).
+     MINDESTENS bildschirmhoch, als Raster mit einer Zeile: Die Zeile ist so
+     hoch wie der Bildschirm oder — wenn Text und kleinster Bot nicht passen
+     (niedrige Fenster, Handy quer) — so hoch wie der Inhalt. Nie ueberlappt
+     etwas die Kopfzeile oder wird unten abgeschnitten. (Die erste Fassung mit
+     fester Hoehe und min-height: min-content wuchs im Browser nicht mit.) */
+  min-height: 100vh;
+  min-height: 100svh;
+  box-sizing: border-box;
+  display: grid;
+  overflow: hidden;
+  background: var(--grad-terra-hero);
+  color: var(--text-on-terra);
+  border-bottom: 2px solid var(--border-ink);
+}
+
+.sv-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--glow-peach);
+  pointer-events: none;
+}
+
+.sv-twinkle {
+  display: none !important;
+}
+
+.sv-hero__inner {
+  position: relative;
+  z-index: 2;
+  width: min(100%, var(--content-max));
+  margin: 0 auto;
+  /* Oben: Hoehe der festen Kopfzeile plus --kopf-luft, unten --kopf-luft-unten
+     (26.09.2026). Vorher oben fest 100px — bei 82px Kopfzeile blieben 18px. */
+  padding: calc(var(--kopfzeile) + var(--kopf-luft)) var(--section-pad-x) var(--kopf-luft-unten);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-7);
+  text-align: center;
+}
+
+.sv-hero__copy,
+.sv-copy,
+.sv-center,
+.sv-detail-card,
+.sv-card,
+.sv-explain-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.sv-hero__copy,
+.sv-copy {
+  align-items: center;
+  gap: var(--space-5);
+  text-align: center;
+}
+
+.sv-center {
+  align-items: center;
+  gap: var(--space-5);
+  text-align: center;
+}
+
+.sv-kicker {
+  margin: 0;
+  font-size: var(--text-kicker);
+  line-height: var(--leading-snug);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-kicker);
+  text-transform: uppercase;
+  /* dunkleres Terracotta: 5,5:1 auf Creme (vorher 4,4:1, zu schwach für kleine Schrift) */
+  color: var(--terra-600);
+}
+
+.sv-kicker--on-terra {
+  color: var(--peach-200);
+}
+
+.sv-hero h1 {
+  max-width: 16ch;
+  margin: 0;
+  color: var(--text-on-terra);
+  font-size: var(--text-hero);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display);
+  font-weight: var(--weight-bold);
+  text-wrap: balance;
+}
+
+.sv-hero__lead,
+.sv-lead {
+  margin: 0;
+  font-size: var(--text-lead);
+  line-height: var(--leading-relaxed);
+  color: var(--text-body);
+}
+
+.sv-hero__lead {
+  max-width: 56ch;
+  color: var(--text-on-terra-soft);
+}
+
+.sv-lead {
+  max-width: 66ch;
+}
+
+.sv-lead--on-terra {
+  color: var(--text-on-terra-soft);
+}
+
+.sv-product {
+  color: var(--text-on-terra);
+  font-weight: var(--weight-bold);
+  white-space: nowrap;
+}
+
+.sv-product span {
+  color: var(--peach-200);
+}
+
+.sv-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+  justify-content: center;
+}
+
+.sv-center .sv-actions {
+  justify-content: center;
+}
+
+.sv-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--space-13);
+  padding: var(--space-4) var(--space-7);
+  box-sizing: border-box;
+  border: 2px solid transparent;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-sans);
+  font-size: var(--text-ui);
+  line-height: 1.2;
+  font-weight: var(--weight-bold);
+  color: var(--text-on-terra);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform var(--duration-fast) var(--ease-spring), background var(--duration-fast) var(--ease-spring), color var(--duration-fast) var(--ease-spring), box-shadow var(--duration-fast) var(--ease-spring);
+}
+
+.sv-button:hover,
+.sv-button:focus-visible {
+  transform: translateY(-3px);
+}
+
+.sv-button--light {
+  background: var(--cream-100);
+  color: var(--terra-600);
+  box-shadow: var(--shadow-cta);
+}
+
+/* Der Handlungsknopf auf hellem Grund. Es gab bisher nur die beiden Varianten
+   für Terracotta — auf Creme wäre ein Knopf ohne Hintergrund unsichtbar
+   gewesen. Farben aus dem Design-System: --cta-bg, unter dem Zeiger
+   --cta-bg-hover. */
+.sv-button--cta {
+  background: var(--cta-bg);
+  color: #FFFFFF;
+  box-shadow: var(--shadow-cta);
+}
+
+.sv-button--cta:hover,
+.sv-button--cta:focus-visible {
+  background: var(--cta-bg-hover);
+  box-shadow: var(--shadow-cta-hover);
+}
+
+/* Als <button> statt <a> braucht es die Vorgaben des Browsers weggeräumt. */
+button.sv-button {
+  cursor: pointer;
+  font-family: var(--font-sans);
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+button.sv-button[disabled] {
+  opacity: 0.55;
+  cursor: default;
+  transform: none;
+}
+
+.sv-button--light:hover,
+.sv-button--light:focus-visible {
+  background: var(--peach-100);
+  color: var(--terra-700);
+  box-shadow: var(--shadow-cta-hover);
+}
+
+.sv-button--glass {
+  border-color: var(--border-on-dark);
+  color: var(--text-on-terra);
+}
+
+.sv-button--glass:hover,
+.sv-button--glass:focus-visible {
+  background: var(--peach-150);
+  color: var(--terra-700);
+}
+
+.sv-proof-list,
+.sv-checklist {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sv-proof-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.sv-proof-list li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--space-11);
+  padding: 0 var(--space-4);
+  border: 1px solid var(--border-on-dark);
+  border-radius: var(--radius-pill);
+  color: var(--text-on-terra-soft);
+  font-size: var(--text-ui);
+  font-weight: var(--weight-semibold);
+}
+
+.sv-proof-list span,
+.sv-checklist span {
+  color: var(--peach-200);
+  font-weight: var(--weight-bold);
+}
+
+.sv-hero__visual {
+  width: min(100%, 32rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sv-hero__robot {
+  position: relative;
+  z-index: 1;
+  width: min(74vw, 19rem);
+  margin: 0;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  pointer-events: none;
+}
+
+/* Bilder kommen als WebP mit PNG als Rueckfall (26.09.2026, Punkt 07b):
+   <picture> soll fuer das Layout nicht existieren, damit alle Regeln fuer
+   das <img> darin gleich wirken wie vorher. */
+picture {
+  display: contents;
+}
+
+.sv-hero__robot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  animation: breathe 6.5s ease-in-out infinite;
+  filter: drop-shadow(var(--shadow-soft));
+  object-fit: contain;
+  object-position: center bottom;
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent 1%, var(--ink-900) 18%, var(--ink-900) 82%, transparent 99%),
+    linear-gradient(180deg, transparent 0%, var(--ink-900) 8%, var(--ink-900) 91%, transparent 100%);
+  mask-image:
+    linear-gradient(90deg, transparent 1%, var(--ink-900) 18%, var(--ink-900) 82%, transparent 99%),
+    linear-gradient(180deg, transparent 0%, var(--ink-900) 8%, var(--ink-900) 91%, transparent 100%);
+  -webkit-mask-composite: destination-in;
+  mask-composite: intersect;
+}
+
+.sv-section {
+  background: var(--bg-page);
+  border-bottom: 1px solid var(--border-strong);
+}
+
+.sv-section--alt {
+  background: var(--bg-alt);
+}
+
+.sv-section--terra {
+  position: relative;
+  overflow: hidden;
+  background: var(--grad-terra-section);
+  color: var(--text-on-terra);
+}
+
+.sv-section--terra::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--glow-peach);
+  pointer-events: none;
+}
+
+.sv-wrap {
+  position: relative;
+  z-index: 1;
+  width: min(100%, var(--content-max));
+  margin: 0 auto;
+  padding: var(--section-pad-y) var(--section-pad-x);
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.sv-intro-grid,
+.sv-split,
+.sv-faq-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-11);
+}
+
+.sv-title {
+  margin: 0;
+  color: var(--text-strong);
+  font-size: var(--text-h2);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display);
+  font-weight: var(--weight-semibold);
+  text-wrap: balance;
+}
+
+.sv-title--on-terra {
+  color: var(--text-on-terra);
+}
+
+.sv-explain-list,
+.sv-card-grid {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.sv-explain-list {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: min(100%, 54rem);
+}
+
+.sv-card-grid {
+  margin-top: var(--space-11);
+}
+
+/* Knopf unter einem Kartenraster (Begleitung, Preis) */
+.sv-card-grid + .sv-actions {
+  margin-top: var(--space-11);
+}
+
+.sv-card-grid--zwei {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.sv-card-grid--three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.sv-card-grid--four {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.sv-explain-item,
+.sv-card,
+.sv-detail-card {
+  align-items: center;
+  gap: var(--space-4);
+  box-sizing: border-box;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  text-align: center;
+}
+
+.sv-explain-item,
+.sv-card {
+  padding: var(--card-pad-sm);
+  background: var(--surface-card);
+}
+
+.sv-card--sand {
+  background: var(--surface-card-sand);
+}
+
+.sv-detail-card {
+  width: min(100%, 48rem);
+  padding: var(--card-pad);
+}
+
+.sv-detail-card--light {
+  background: var(--surface-card);
+  color: var(--text-strong);
+}
+
+.sv-detail-card--comic {
+  background: var(--surface-card);
+  border: 2px solid var(--border-ink);
+  box-shadow: var(--shadow-comic);
+}
+
+.sv-label,
+.sv-card__no,
+.sv-step__no {
+  font-family: var(--font-mono);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-badge);
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.sv-label {
+  font-size: var(--text-overline);
+}
+
+.sv-card__no,
+.sv-step__no {
+  font-size: var(--text-badge);
+}
+
+/* Rechenbeispiel auf Terracotta (26.09.2026, Punkt 06 aus Philips
+   Vorschlaegen): ausdruecklich als Beispiel gekennzeichnet, bis ein echter
+   Fall mit Einwilligung vorliegt. Haarlinie auf Dunkel, kein Comic-Rand. */
+.sv-beispiel {
+  display: grid;
+  gap: var(--space-2);
+  width: min(100%, 40rem);
+  padding: var(--space-5) var(--space-6);
+  box-sizing: border-box;
+  border: 1px solid var(--border-on-dark);
+  border-radius: var(--radius-lg);
+  text-align: center;
+}
+
+.sv-beispiel p {
+  margin: 0;
+  color: var(--text-on-terra-soft);
+  font-size: var(--text-body-sm);
+  line-height: 1.65;
+  -webkit-hyphens: manual;
+  hyphens: manual;
+}
+
+.sv-beispiel .sv-beispiel__label {
+  font-family: var(--font-mono);
+  font-size: var(--text-overline);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-badge);
+  text-transform: uppercase;
+  color: var(--peach-200);
+}
+
+.sv-beispiel .sv-beispiel__hinweis {
+  font-size: var(--text-overline);
+  color: var(--peach-200);
+}
+
+/* Hervorgehobene Karte mit Etikett (29.09.2026, André: «Beliebter Einstieg»
+   auf KI-Kompetenz). Rand 2px in terra-500 statt der Haarlinie, das Polster
+   um 1px kleiner, damit der Inhalt genau dort bleibt, wo er in den anderen
+   Karten steht. Das Etikett ist der Baustein «Etikett» (LabelBadge, Ton
+   peach) und sitzt mittig auf der oberen Kante; die Haarlinie trennt es vom
+   Sand. Kein Schatten: Karten auf Creme und Sand bleiben schattenlos. */
+.sv-card--hervor {
+  position: relative;
+  padding: 19px 21px;
+  border: 2px solid var(--terra-500);
+}
+
+.sv-card .sv-card__etikett {
+  position: absolute;
+  top: -1px;   /* Mitte genau auf dem 2px-Rand */
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  padding: 7px 14px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--peach-150);
+  color: var(--terra-600);
+  font-size: 11px;
+  font-weight: var(--weight-bold);
+  line-height: 1.2;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Reihenfolge der Startseitenkarten (30.09.2026, André): Automatisierungen,
+   KI-Kompetenz, Sichtbarkeit, Begleitung. So steht es im Quelltext, also auf jedem
+   Geraet gleich. Auf dem Desktop steht die hervorgehobene Karte damit in der
+   Mitte. Auf dem Handy stehen die Karten untereinander und das Etikett ragt
+   14px ueber die Karte hinaus; bei 16px Abstand stiesse es fast an die Karte
+   darueber, darum dort etwas mehr Luft. */
+@media (max-width: 700px) {
+  .sv-card + .sv-card--hervor {
+    margin-top: var(--space-3);
+  }
+}
+
+/* «Passt, wenn …» auf den Startseitenkarten (26.09.2026, Punkt 03 aus
+   Philips Vorschlaegen): Der Kartentext sagt, was wir tun — diese Zeile,
+   woran man merkt, dass es passt. Ueber die ganze Kartenbreite, abgesetzt mit
+   der Haarlinie (Randsystem der Karten), der Anfang in terra-600. */
+.sv-card .sv-card__passt {
+  align-self: stretch;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border-strong);
+}
+
+.sv-card__passt strong {
+  color: var(--terra-600);
+  font-weight: var(--weight-bold);
+}
+
+/* Keine Silbentrennung im Angebotsabschnitt der Startseite (26.09.2026, André: «Trenn-
+   und Gedankenstriche generell vermeiden»). Die Karten sind schmal, «au-tomatisch», «Korrespon-denz»
+   und «Automatisie-rungen» standen gleich mehrfach da. Das laengste Wort
+   («Automatisierungen») passt auch auf 320px ganz; overflow-wrap von oben
+   faengt ab, falls doch einmal eines nicht passt. */
+#bereiche .sv-card p,
+#bereiche .sv-title,
+#bereiche .sv-lead,
+#preis .sv-lead,
+#team .sv-card p,
+#team .sv-title,
+#team .sv-lead {
+  -webkit-hyphens: manual;
+  hyphens: manual;
+}
+
+/* «Noch unsicher?» senkrecht in der Mitte (26.09.2026, André). Auf dem
+   Desktop steht die Karte neben «Begleitung» und ist so hoch wie diese; ohne
+   das sass der Inhalt oben und darunter blieb eine leere Flaeche. */
+#bereiche .sv-card--terra {
+  justify-content: center;
+}
+
+/* Wort mit Bindestrich nie am Bindestrich umbrechen («KI-» / «Antworten»). */
+.sv-ganz {
+  white-space: nowrap;
+}
+
+/* Preiszeile der Startseitenkarten (26.09.2026, Punkt 02 aus Philips
+   Vorschlaegen): jede Angebotskarte nennt ihren Einstieg an derselben Stelle,
+   direkt ueber dem Knopf — «alle oder keine». Mono wie alle Zahlen, terra-600
+   statt terra-500, weil die Schrift klein ist (5.5:1 statt 4.4:1).
+   Direkt unter dem Text wie bisher die Knoepfe — ein «margin-top: auto» riss
+   auf dem Desktop grosse Luecken, weil die Karte KI-Kompetenz zwei Knoepfe
+   untereinander traegt. Umbrochen wird nur beim «·»: jeder Teil steht in
+   einem eigenen <span>, der nicht bricht.
+   Wo noch kein Preis feststeht: «nach Erstgespraech». */
+.sv-card .sv-card__preis {
+  hyphens: none;
+  font-family: var(--font-mono);
+  font-size: var(--text-overline);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-badge);
+  line-height: 1.5;
+  text-transform: uppercase;
+  color: var(--terra-600);
+}
+
+.sv-card__preis span {
+  white-space: nowrap;
+}
+
+.sv-explain-item h3,
+.sv-card h3,
+.sv-detail-card h3,
+.sv-steps h3 {
+  margin: 0;
+  color: var(--text-strong);
+  font-size: var(--text-h3);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+  font-weight: var(--weight-semibold);
+}
+
+.sv-explain-item p,
+.sv-card p,
+.sv-detail-card p,
+.sv-steps p,
+.sv-faq-item p {
+  margin: 0;
+  color: var(--text-body);
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body);
+}
+
+.sv-section--terra .sv-detail-card h3 {
+  color: var(--text-strong);
+}
+
+.sv-checklist {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.sv-checklist li {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: var(--space-3);
+  color: var(--text-body);
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body);
+  text-align: center;
+}
+
+.sv-checklist span {
+  color: var(--accent);
+}
+
+.sv-steps {
+  display: grid;
+  gap: 0;
+  list-style: none;
+  margin: var(--space-11) 0 0;
+  padding: 0;
+  border-top: 1px solid var(--border-strong);
+}
+
+.sv-steps li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+  padding: var(--space-6) 0;
+  border-bottom: 1px solid var(--border-strong);
+  text-align: center;
+}
+
+.sv-steps div {
+  display: grid;
+  gap: var(--space-2);
+  justify-items: center;
+}
+
+.sv-question-bot {
+  width: min(100%, 19rem);
+  align-self: center;
+  margin-top: calc(var(--space-2) * -1);
+  filter: drop-shadow(0 18px 26px rgba(64, 31, 8, 0.12));
+  mix-blend-mode: multiply;
+  -webkit-mask-image: radial-gradient(ellipse 62% 70% at 50% 48%, #000 38%, rgba(0, 0, 0, 0.92) 55%, rgba(0, 0, 0, 0.52) 74%, transparent 100%);
+  mask-image: radial-gradient(ellipse 62% 70% at 50% 48%, #000 38%, rgba(0, 0, 0, 0.92) 55%, rgba(0, 0, 0, 0.52) 74%, transparent 100%);
+}
+
+.sv-faq-list {
+  width: min(100%, 48rem);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.sv-faq-item {
+  background: var(--surface-card);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.sv-faq-item summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-4);
+  align-items: center;
+  padding: var(--space-5) var(--space-6);
+  cursor: pointer;
+  color: var(--text-strong);
+  font-size: var(--text-h4);
+  line-height: var(--leading-snug);
+  font-weight: var(--weight-semibold);
+  list-style: none;
+  text-align: center;
+}
+
+.sv-faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.sv-faq-item summary span[aria-hidden="true"] {
+  color: var(--accent);
+  font-size: var(--text-h3);
+  transition: transform var(--duration-fast) var(--ease-spring);
+}
+
+.sv-faq-item[open] summary span[aria-hidden="true"] {
+  transform: rotate(45deg);
+}
+
+.sv-faq-item p {
+  padding: 0 var(--space-6) var(--space-5);
+  text-align: center;
+}
+
+.sv-final,
+.sv-footer {
+  background: var(--grad-terra-footer);
+  color: var(--text-on-terra);
+}
+
+.sv-final {
+  position: relative;
+  overflow: hidden;
+}
+
+.sv-final::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--glow-peach);
+  pointer-events: none;
+}
+
+.sv-footer {
+  border-top: 1px solid var(--border-on-dark);
+}
+
+.sv-footer__inner {
+  width: min(100%, var(--content-max));
+  margin: 0 auto;
+  padding: var(--space-7) var(--section-pad-x);
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  text-align: center;
+}
+
+.sv-footer__logo,
+.sv-footer__top,
+.sv-footer a {
+  color: var(--text-on-terra);
+  text-decoration: none;
+}
+
+.sv-footer__logo {
+  display: inline-flex;
+  align-items: center;
+}
+
+.sv-footer__logo img {
+  display: block;
+  height: var(--space-6);
+  width: auto;
+}
+
+.sv-footer p,
+.sv-footer__top {
+  margin: 0;
+  color: var(--text-on-terra-soft);
+  font-size: var(--text-ui);
+  line-height: var(--leading-body);
+  font-weight: var(--weight-semibold);
+}
+
+@media (max-width: 1120px) {
+  .sv-hero h1 {
+    max-width: 14ch;
+  }
+
+  .sv-card-grid--four {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1120px) and (min-width: 701px) {
+  .sv-hero__inner {
+    gap: var(--space-9);
+  }
+}
+
+@media (max-width: 700px) {
+  html {
+    scroll-padding-top: calc(var(--space-16) + var(--space-2));
+  }
+
+  .sv-wrap,
+  .sv-hero__inner,
+  .sv-footer__inner {
+    padding-left: var(--space-5);
+    padding-right: var(--space-5);
+  }
+
+  /* Bis 25.09.2026 richtete sich der Hero auf dem Handy nach seinem Inhalt,
+     damit die AGB keine 280px leere Terracotta-Flaeche bekamen. Seit dem
+     26.09.2026 ist er auch hier bildschirmhoch (Entscheid André: jede Seite
+     gleich, der Kopf fuellt den Bildschirm) — die Regel oben gilt also auch
+     auf dem Handy; der Inhalt sitzt mittig. */
+
+  /* Handy: Luft oben und unten wie auf allen Breiten (siehe .sv-hero), dazu
+     zwischen Kicker, Titel, Einleitung und Knoepfen 26px und bis zum Bot 32px
+     — so wie auf der FAQ-Seite. */
+  .sv-hero__inner {
+    gap: 32px;
+  }
+
+  .sv-hero__copy {
+    gap: 26px;
+  }
+
+  .sv-hero h1 {
+    max-width: none;
+  }
+
+  .sv-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .sv-button {
+    width: 100%;
+  }
+
+  .sv-hero__robot {
+    width: min(100%, 13rem);
+  }
+
+  .sv-explain-list,
+  .sv-card-grid--zwei,
+  .sv-card-grid--three,
+  .sv-card-grid--four {
+    grid-template-columns: 1fr;
+  }
+
+  .sv-card-grid {
+    margin-top: var(--space-7);
+  }
+
+  .sv-steps li {
+    gap: var(--space-3);
+  }
+
+  .sv-footer__inner {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .sv-wrap {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-16);
+  }
+
+  .sv-detail-card,
+  .sv-card,
+  .sv-explain-item {
+    padding: var(--space-5);
+  }
+
+  .sv-faq-item summary {
+    padding: var(--space-5);
+  }
+
+  .sv-faq-item p {
+    padding: 0 var(--space-5) var(--space-5);
+  }
+}
+
+/* Kompakter Terracotta-Kopf für Bereiche ohne grosses Bild (Academy).
+   Gleiche Farbe und gleiche Kopfzeile wie überall, aber flach statt bildschirmhoch. */
+.sv-hero--kompakt { min-height: 0; }
+.sv-hero--kompakt .sv-hero__inner {
+  padding-top: calc(var(--section-pad-y) + var(--space-6));
+  padding-bottom: var(--space-6);
+  gap: var(--space-4);
+}
+
+/* Karte auf Terracotta — für die Karte, die aus der Reihe hervorstechen soll,
+   ohne wie ein Fremdkörper zu wirken. Textfarben mitgeführt. */
+.sv-card--terra {
+  background: var(--grad-package);
+  color: var(--text-on-terra);
+  border-color: var(--border-ink);
+}
+.sv-card--terra h3 { color: #FFFDF8; }
+.sv-card--terra p { color: rgba(255, 240, 230, 0.92); }
+.sv-card--terra .sv-card__no { color: var(--peach-200); }
+
+/* Karte über zwei Spalten. Seit Kurse und Schulung im Betrieb eine Karte sind
+   (25.09.2026), stehen im Dreierraster fünf Karten; «Noch unsicher?» füllt die
+   Lücke. Auf dem Handy gibt es nur eine Spalte — dort würde «span 2» eine
+   zweite, leere Spalte erzwingen. */
+.sv-card-grid--three .sv-card--breit {
+  grid-column: span 2;
+}
+
+@media (max-width: 700px) {
+  .sv-card-grid--three .sv-card--breit {
+    grid-column: auto;
+  }
+}
+
+/* Startseite auf dem Tablet (701–1024px): zwei Spalten statt drei. In drei
+   Spalten waren die Karten dort nur 224px breit — «Zu den Automatisierungen →»
+   (263px, bricht nicht um) ragte über den Rand (26.09.2026). Vier Karten stehen
+   2×2, «Noch unsicher?» darunter über die ganze Breite. Nur das Raster mit der
+   breiten Karte, also nur die Startseite. */
+@media (min-width: 701px) and (max-width: 1024px) {
+  .sv-card-grid--three:has(.sv-card--breit) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  /* Ohne diese Zeilen gewinnt die kompakte Regel oben gegen die Handy-Anpassung
+     und der Kopf bekaeme zu wenig Platz unter der festen Kopfzeile. */
+  .sv-hero--kompakt .sv-hero__inner {
+    padding-top: calc(var(--section-pad-y) + var(--space-9));
+    padding-bottom: var(--space-6);
+    gap: var(--space-7);
+  }
+}
+
+/* ── Netzwerk-Zeichen in der Fusszeile ───────────────────────────────────
+   Bewusste Ausnahme vom Symbolverbot (10.09.2026): Facebook, Instagram und
+   LinkedIn erkennt man am Zeichen oder gar nicht. Glas-Optik ist hier
+   zulässig, weil die Fusszeile terracottafarben ist — auf hellem Grund wäre
+   sie es nicht. Schlichte Verweise, kein Baustein der Netzwerke. */
+.sv-footer__social {
+  /* width statt flex-basis: Unter 700px wird .sv-footer__inner zur Spalte, und
+     dort meint flex-basis die Höhe. width erzwingt in der Zeile den Umbruch auf
+     eine eigene Zeile und stört in der Spalte nicht. */
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 2px;
+}
+
+.sv-footer__social a {
+  width: 46px;
+  height: 46px;
+  border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  background: rgba(255, 244, 236, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-sizing: border-box;
+  transition: background 0.3s ease, transform 0.3s var(--ease-spring);
+}
+
+.sv-footer__social a:hover {
+  background: rgba(255, 244, 236, 0.24);
+  transform: translateY(-2px);
+}
+
+.sv-footer__social svg {
+  display: block;
+}
+
+/* Häkchen in hellen Karten: Auf Creme gehört der Haken in Terracotta, nicht in
+   Peach — Peach ist für Terracotta-Flächen gedacht und verschwindet auf hell.
+   So steht es in den Design-Regeln. */
+.sv-detail-card--light .sv-checklist span,
+.sv-card .sv-checklist span {
+  color: var(--terra-500);
+}
+
+.sv-detail-card--light .sv-checklist,
+.sv-card .sv-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  text-align: left;
+}
+
+.sv-detail-card--light .sv-checklist li,
+.sv-card .sv-checklist li {
+  display: flex;
+  gap: var(--space-2);
+  line-height: 1.6;
+}
+
+/* ── Freigestellter Büro-Bot ─────────────────────────────────────────────
+   Die übrigen Hero-Bilder bringen einen eigenen terracottafarbenen Grund mit;
+   bei ihnen weicht die Kante-weich-Maske den Übergang auf. Ein freigestelltes
+   Bild hat keinen Grund — dieselbe Maske würde ihm Kopf und Füsse abschneiden.
+   Darum hier keine Maske, sondern ein weicher Peach-Schein dahinter und ein
+   warmer Bodenschatten darunter: So sitzt er in der Fläche, statt auf ihr zu
+   kleben. Schatten warm-braun, nie grau — so steht es in den Design-Regeln. */
+.sv-hero__robot--frei {
+  width: min(60vw, 16rem);
+  overflow: visible;
+  border-radius: 0;
+}
+
+.sv-hero__robot--frei::before {
+  content: "";
+  position: absolute;
+  inset: -14% -26% -4%;
+  z-index: -1;
+  border-radius: 999px;
+  background: radial-gradient(60% 50% at 50% 52%, rgba(244, 158, 96, 0.5), transparent 72%);
+}
+
+.sv-hero__robot--frei::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 12%;
+  right: 12%;
+  bottom: 1%;
+  height: 5%;
+  border-radius: 999px;
+  background: rgba(62, 22, 6, 0.5);
+  filter: blur(9px);
+}
+
+/* Breites Motiv (Begleitung, Academy; 26.09.2026). Der Bot soll gleich hoch
+   stehen wie auf den übrigen Seiten, darum wird der Rahmen im Verhältnis des
+   Bildes breiter statt das Bild kleiner. Das Verhältnis gibt die Seite mit:
+   style="--bot-verhaeltnis: 804 / 820" (Bildbreite / Bildhoehe) —
+   scripts/bot_einpassen.py --breit gibt die Zeile aus. Die Breite hier gilt
+   nur noch als Rueckfall; massgebend ist die Regel weiter unten.
+   Ohne Angabe gilt 1.26 (Begleitung). */
+.sv-hero__robot--breit {
+  width: min(calc(60vw * var(--bot-breite, 1.26)), calc(16rem * var(--bot-breite, 1.26)));
+}
+
+.sv-hero__robot--frei img {
+  -webkit-mask-image: none;
+  mask-image: none;
+  filter: drop-shadow(0 16px 22px rgba(62, 22, 6, 0.4));
+}
+
+/* ── Der Bot nimmt, was der bildschirmhohe Kopf uebrig laesst (26.09.2026) ─
+   Text und Knoepfe werden nie beschnitten; schrumpfen darf nur der Bot. Die
+   Bildflaeche ist hoechstens 308px hoch (so gross wie bisher), mindestens
+   120px, und sonst so hoch wie der Platz unter den Knoepfen. Die Breite folgt
+   aus dem Bildverhaeltnis 682×820, bei breiten Motiven mal --bot-breite.
+   Auf grossen Bildschirmen bleibt Platz uebrig; dann sitzt alles mittig.
+   Die Breitenregeln oben bleiben als Rueckfall fuer Browser ohne
+   Container-Abfragen. */
+.sv-hero__copy {
+  flex-shrink: 0;
+}
+
+/* Der Bot-Bereich zaehlt fuer die Hoehe des Kopfs nur mit seinem Minimum
+   (Basis 0, Groesse eingeschlossen). Ist Platz, waechst er bis 308px; der
+   Rest verteilt sich ober- und unterhalb des Inhalts.
+   Der Innenteil ist selbst mindestens bildschirmhoch (min-height): So fuellt
+   der Bot den Platz in jedem Browser — auch in Safari, das den Raster-Weg
+   anders rechnet (26.09.2026: dort waren die Bots verschwunden). */
+.sv-hero__inner {
+  min-height: calc(100vh - 2px);
+  min-height: calc(100svh - 2px);
+}
+
+.sv-hero__visual:has(.sv-hero__robot--frei) {
+  position: relative;
+  flex: 1 1 0;
+  min-height: 120px;
+  max-height: 308px;
+}
+
+/* Der Bot fuellt die Hoehe seines Bereichs: absolut oben und unten angesetzt,
+   die Breite folgt aus dem Bildverhaeltnis (682:820, breite Motive geben
+   --bot-verhaeltnis mit). Kein Ausblenden mehr: Am 26.09.2026 waren die Bots
+   auf dem iPhone weg — Safari zeigt dort mit Leisten nur 660–750px Hoehe, und
+   die Regeln «unter 700px Hoehe» und «unter 120px Platz» blendeten sie aus. */
+.sv-hero__visual .sv-hero__robot--frei {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: auto;
+  max-width: 100%;
+  margin: 0;
+  aspect-ratio: var(--bot-verhaeltnis, 682 / 820);
+  transform: translateX(-50%);
+}
+
+.sv-hero__visual .sv-hero__robot--frei img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+/* Auf dem Handy schwebt «Fragen Sie Vaia» unten rechts (46px hoch, 24px vom
+   Rand) — genau dort, wo der Bot mit den Fuessen steht. Darum unten so viel
+   Luft, dass er darueber endet. Der Bot bleibt immer sichtbar, mindestens
+   120px hoch; reicht der Platz nicht, wird der Kopf hoeher (26.09.2026: das
+   Ausblenden traf in Safari fast jedes iPhone). */
+@media (max-width: 700px) {
+  .sv-hero__inner:has(.sv-hero__robot--frei) {
+    padding-bottom: max(calc(var(--space-6) + 60px), var(--kopf-luft-unten));
+  }
+}
+
+/* ── FAQ nach Bereichen ──────────────────────────────────────────────────
+   Die Fragen aller Seiten an einem Ort. Jede Gruppe trägt den Namen ihres
+   Bereichs und einen Verweis dorthin — sonst weiss niemand, woher eine
+   Frage stammt. Die Sprungleiste oben führt direkt zur Gruppe. */
+.sv-faq-sprung {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  margin: var(--space-9) 0 var(--space-4);
+}
+
+.sv-faq-sprung a {
+  padding: 9px 18px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  color: var(--text-strong);
+  font-size: var(--text-ui);
+  font-weight: var(--weight-semibold);
+  text-decoration: none;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.sv-faq-sprung a:hover {
+  background: var(--sand-200);
+  border-color: var(--border-ink);
+}
+
+.sv-faq-gruppe {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+  width: min(100%, 48rem);
+  margin: 0 auto;
+  padding-top: var(--space-11);
+  /* Kein eigenes scroll-margin: html trägt bereits ein scroll-padding-top
+     (88px am Bildschirm, 72px auf dem Handy). Beides zusammen hätte beim
+     Sprung eine Lücke von über 170px über der Überschrift gelassen. */
+}
+
+.sv-faq-gruppe + .sv-faq-gruppe {
+  border-top: 1px solid var(--border-soft);
+}
+
+.sv-faq-gruppe h3 {
+  margin: 0;
+  font-size: var(--text-h3);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-tight);
+  color: var(--terra-500);
+}
+
+.sv-faq-gruppe__mehr {
+  color: var(--link);
+  font-size: var(--text-ui);
+  font-weight: var(--weight-bold);
+  text-decoration: none;
+}
+
+.sv-faq-gruppe__mehr:hover { color: var(--link-hover); }
+
+/* ── Linkzeile der Fusszeile ─────────────────────────────────────────────
+   Weitere Seiten, die nicht im Kopf stehen. Am Bildschirm eine Zeile mit
+   Mittepunkten, auf dem Handy untereinander (wie die Adresszeile). */
+.sv-footer__links {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 0;
+  font-size: var(--text-ui);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-body);
+}
+
+.sv-footer__links a {
+  color: var(--text-on-terra);
+  text-decoration: none;
+}
+
+.sv-footer__links a:hover,
+.sv-footer__links a:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.sv-footer__links a + a::before {
+  content: " · ";
+  display: inline-block;
+  margin: 0 0.5em;
+  text-decoration: none;
+}
+
+@media (max-width: 700px) {
+  .sv-footer__links {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .sv-footer__links a {
+    min-height: 32px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .sv-footer__links a + a::before {
+    content: none;
+  }
+}
+
+/* ── Adresszeile der Fusszeile ───────────────────────────────────────────
+   Am Bildschirm eine Zeile mit Mittepunkten, auf dem Handy drei Zeilen:
+   Firma · Adresse · Mail und Datenschutz. Die Trenner stecken in ::before
+   und verschwinden beim Umbruch von selbst — so steht kein Punkt am
+   Zeilenende. */
+.sv-footer__adresse {
+  margin: 0;
+}
+
+.sv-footer__adresse > span + span::before {
+  content: " · ";
+}
+
+@media (max-width: 700px) {
+  .sv-footer__adresse > span {
+    display: block;
+    line-height: 1.7;
+  }
+
+  .sv-footer__adresse > span + span::before {
+    content: none;
+  }
+}
+
+/* ── Kontaktformular ─────────────────────────────────────────────────────
+   Datensparsam: Pflicht sind Name, Mail und Nachricht. Firma und Telefon
+   stehen dabei, weil sie das Erstgespräch abkürzen — mehr wird nicht
+   gefragt. Comic-Rand ist hier nicht erlaubt (der gilt nur für Chat und
+   Sprechblasen), darum Haarlinie wie bei den Karten. */
+.vc-kontakt__herkunft {
+  margin: 0;
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  background: var(--peach-150);
+  border: 1px solid rgba(28, 22, 19, 0.14);
+  font-size: var(--text-body-sm);
+  color: var(--terra-600);
+  font-weight: var(--weight-semibold);
+}
+
+.vc-kontakt {
+  width: min(100%, 40rem);
+  margin: var(--space-9) auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  text-align: left;
+}
+
+.vc-kontakt__reihe {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.vc-kontakt label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: var(--text-ui);
+  font-weight: var(--weight-semibold);
+  color: var(--text-strong);
+}
+
+.vc-kontakt input,
+.vc-kontakt select,
+.vc-kontakt textarea {
+  font-family: var(--font-sans);
+  font-size: var(--text-size-body);
+  font-weight: var(--weight-medium);
+  color: var(--text-strong);
+  background: var(--cream-card);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  box-sizing: border-box;
+  width: 100%;
+  transition: border-color 0.3s ease;
+}
+
+.vc-kontakt textarea {
+  min-height: 9rem;
+  resize: vertical;
+}
+
+.vc-kontakt input:focus,
+.vc-kontakt select:focus,
+.vc-kontakt textarea:focus {
+  outline: none;
+  border-color: var(--terra-500);
+}
+
+.vc-kontakt__fuss {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.vc-kontakt__hinweis {
+  margin: 0;
+  max-width: 34ch;
+  font-size: var(--text-body-sm);
+  line-height: 1.55;
+  color: var(--text-body);
+}
+
+.vc-kontakt__meldung {
+  margin: 0;
+  font-size: var(--text-body-sm);
+  font-weight: var(--weight-semibold);
+  line-height: 1.55;
+  color: var(--text-body);
+}
+
+.vc-kontakt__meldung[data-art="gut"]     { color: #1B5E33; }
+.vc-kontakt__meldung[data-art="fehler"]  { color: #8C1D18; }
+.vc-kontakt__meldung[data-art="hinweis"] { color: var(--terra-600); }
+
+@media (max-width: 700px) {
+  .vc-kontakt__reihe {
+    grid-template-columns: 1fr;
+  }
+
+  .vc-kontakt__fuss {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .vc-kontakt__fuss .sv-button {
+    width: 100%;
+  }
+}
+
+/* ── Lange deutsche Wörter ───────────────────────────────────────────────
+   «Berufshaftpflichtversicherung» ist bei 16.5px rund 263px breit. In einer
+   Karte auf einem 320px-Gerät bleiben innen 240px — das Wort liefe hinaus.
+   Und weil .sv-page seitlichen Überlauf versteckt, wäre es nicht einmal
+   sichtbar, sondern abgeschnitten. Silbentrennung greift, weil die Seiten
+   lang="de-CH" tragen; overflow-wrap fängt ab, was sich nicht trennen lässt. */
+.sv-detail-card p,
+.sv-detail-card li,
+.sv-card p,
+.sv-faq-item p,
+.sv-lead,
+.sv-hero__lead,
+.sv-steps p {
+  -webkit-hyphens: manual;
+  hyphens: manual;
+  overflow-wrap: break-word;
+}
+
+/* ── Lange Wörter in Hero-Überschriften ──────────────────────────────────
+   «Geschäftsbedingungen» braucht bei 32px rund 371px; auf einem 375px-Gerät
+   stehen 335px zur Verfügung. Der Abschnitt schneidet seitlichen Überlauf ab,
+   das Wort wäre also halb verschwunden. Silbentrennung greift dank
+   lang="de-CH" und ist die saubere Lösung — deutsche Leser erwarten sie. */
+.sv-hero h1,
+.sv-title {
+  -webkit-hyphens: manual;
+  hyphens: manual;
+  overflow-wrap: break-word;
+}
+
+/* Für Seiten, deren Titel aus einem einzigen langen Wort besteht: eine Stufe
+   kleiner, damit es auch ohne Trennung nicht knapp wird. Nur auf dem Handy —
+   am Bildschirm ist Platz genug. */
+@media (max-width: 700px) {
+  .sv-hero h1.sv-hero__titel--lang {
+    font-size: clamp(25px, 6.6vw, 34px);
+  }
+}
+
+/* ── Gründerbilder auf «Über uns» ────────────────────────────────────────
+   Auf dem Handy bleibt alles, wie es war: das Bild in seiner natürlichen
+   Form, höchstens 220px breit, zentriert in der Karte. Am Bildschirm war
+   genau das zu klein — 220px in einer 568px breiten Karte, mit viel Luft
+   daneben. Dort füllt das Foto jetzt die Karte und steht in einem festen
+   Ausschnitt (3:2), damit beide Gründer gleich gross und gleich hoch im
+   Bild sind. Die Vorlagen sind 1508×1043, der Kopf jeweils mittig — der
+   Ausschnitt schneidet darum nur wenig unten weg. */
+/* «Über uns» (26.09.2026, Punkt 06c): Rolle unter dem Namen hervorgehoben,
+   darunter ein Absatz pro Gruender; «So arbeiten wir» mit Abstand unter
+   den Karten. */
+.sv-card .sv-team-rolle {
+  font-weight: var(--weight-semibold);
+  color: var(--terra-600);
+}
+
+.sv-team-arbeit {
+  margin-top: var(--space-11);
+}
+
+.sv-team-foto {
+  width: 100%;
+  max-width: 220px;
+  height: auto;
+  border-radius: 18px;
+  display: block;
+  margin-bottom: 16px;
+}
+
+@media (min-width: 701px) {
+  .sv-team-foto {
+    max-width: none;
+    aspect-ratio: 3 / 2;
+    height: auto;
+    object-fit: cover;
+    object-position: 50% 25%;
+    border-radius: 16px;
+    margin-bottom: 4px;
+  }
+}
+
+/* ── Titel «Über uns»: keine Worttrennung ────────────────────────────────
+   Auf schmalen Geräten trennte der Browser «moderne» zu «moder-ne». Die
+   Silbentrennung ist für Seiten wie die AGB da, deren Titel aus einem
+   einzigen langen Wort besteht; hier sind alle Wörter kurz genug, der Titel
+   bricht auch an den Wortgrenzen sauber. Unter 380px eine Spur kleiner,
+   damit «Unternehmerische» ganz auf eine Zeile passt. */
+.sv-hero h1.sv-hero__titel--ganz {
+  -webkit-hyphens: manual;
+  hyphens: manual;
+}
+
+@media (max-width: 380px) {
+  .sv-hero h1.sv-hero__titel--ganz {
+    font-size: clamp(26px, 7.6vw, 32px);
+  }
+}
+
+/* ── Knöpfe auf dem Handy eine Nummer kleiner ────────────────────────────
+   Am Bildschirm stehen die Knöpfe nebeneinander, dort ist die Höhe von 52px
+   richtig. Auf dem Handy stehen sie untereinander und über der ganzen
+   Breite — zwei davon nehmen dann einen guten Teil des ersten Bildschirms
+   ein. 44px bleiben bequem zu treffen (das ist das übliche Mindestmass für
+   eine Fingerfläche), die Schriftgrösse bleibt unverändert. */
+@media (max-width: 700px) {
+  .sv-button {
+    min-height: 44px;
+    padding: var(--space-3) var(--space-6);
+  }
+}
+
+/* Handy: Luft unter der Kopfzeile fest 56px statt mit der Hoehe zu schrumpfen.
+   Safari zeigt auf dem iPhone mit eingeblendeten Leisten nur 660–750px Hoehe;
+   geschrumpft blieben dort 34–48px — so eng, wie André es nicht will. Passt der
+   Inhalt dann nicht, waechst der Kopf, und der Chat-Knopf wartet. */
+@media (max-width: 700px) {
+  .sv-hero { --kopf-luft: 56px; }
+
+  /* Auf dem Handy ist der Kopf in Safari meist ohnehin laenger als der
+     Bildschirm — dann soll der Bot nicht beim Minimum stehen bleiben. */
+  .sv-hero__visual:has(.sv-hero__robot--frei) { min-height: 160px; }
+}
+
+/* Kopfzeilenhoehe je Breite, passend zu mockup-entwurf.css (26.09.2026). */
+@media (max-width: 1080px) {
+  .sv-hero { --kopfzeile: 74px; }
+}
+
+@media (max-width: 1024px) {
+  .sv-hero { --kopfzeile: 66px; }
+}
+
+
+/* Bis Tablet-Breite schwebt «Fragen Sie Vaia» unten rechts ueber dem Kopf.
+   Unten ist darum immer Platz fuer ihn frei (46px + 24px Rand + Luft), auch
+   auf Seiten ohne Bot wie AGB und Datenschutz (26.09.2026). */
+@media (max-width: 1024px) {
+  .sv-hero__inner {
+    padding-bottom: max(84px, var(--kopf-luft-unten));
+  }
+}
+
+/* Desktop: Bot auf allen Seiten gleich gross wie auf «Kontakt» (26.09.2026,
+   André). Vorher nahm er den Platz unter dem Text — Seiten mit kurzem Text
+   bekamen einen groesseren Bot. Jetzt haengt die Hoehe nur vom Bildschirm ab:
+   so viel, wie auf der Kontaktseite unter dem Text frei bleibt (1440×900:
+   203px), hoechstens 308px, mindestens 120px. Seiten mit laengerem Text werden
+   dafuer etwas hoeher als der Bildschirm, solche mit kuerzerem bekommen mehr
+   Luft ober- und unterhalb. */
+@media (min-width: 1025px) {
+  .sv-hero__visual:has(.sv-hero__robot--frei) {
+    flex: 0 0 auto;
+    height: clamp(120px, calc(100vh - 697px), 308px);
+    height: clamp(120px, calc(100svh - 697px), 308px);
+  }
+}
+
+/* ── Visibility-Check (seit 04.10.2026) ──────────────────────────────────
+   Domain eingeben, unser Server ruft die öffentlichen Dateien der Website ab
+   (Startseite, robots.txt, sitemap.xml, llms.txt), prüft sie in sechs
+   Schritten und lässt Claude die Befunde auswerten (visibility-check.js,
+   Dienst hinter /api/sichtbarkeit). Das Ergebnis zeigt den Gesamtwert, das
+   grösste Potenzial und einen Bereich ganz; die drei anderen nur mit
+   Punktzahl, Titeln und Status. Die grauen Balken dort sind Platzhalter,
+   keine verborgenen Texte — die schickt der Server gar nicht. Den ganzen
+   Bericht bestellt man mit dem Formular darunter.
+
+   Ampelfarben gibt es im Design-System keine. Grün, Ocker und Rot hier sind
+   so dunkel gewählt, dass der Punkt auf Creme und Sand mindestens 3:1
+   erreicht; der Status steht immer auch als Wort daneben. */
+.sv-check__form {
+  width: min(100%, 36rem);
+  margin: var(--space-9) auto 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: center;
+  gap: var(--space-3);
+}
+
+.sv-check__feld {
+  flex: 0 1 20rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+}
+
+.sv-check__feld-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-overline);
+  letter-spacing: var(--tracking-badge);
+  text-transform: uppercase;
+  color: var(--brown-600);
+}
+
+.sv-check__feld input {
+  font-family: var(--font-sans);
+  font-size: var(--text-size-body);
+  font-weight: var(--weight-medium);
+  color: var(--text-strong);
+  background: var(--cream-card);
+  border: 2px solid var(--border-ink);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-comic);
+  padding: 13px 16px;
+  box-sizing: border-box;
+  width: 100%;
+  transition: transform 0.25s ease;
+}
+
+.sv-check__feld input:focus {
+  outline: none;
+  transform: translate(2px, 2px);
+  box-shadow: 4px 4px 0 rgba(28, 22, 19, 0.85);
+}
+
+.sv-check__form .sv-button {
+  flex: 0 0 auto;
+}
+
+.sv-check__hinweis {
+  margin: var(--space-4) 0 0;
+  font-size: var(--text-body-sm);
+  color: var(--brown-600);
+}
+
+.sv-check__fehler {
+  margin: var(--space-3) 0 0;
+  font-size: var(--text-body-sm);
+  font-weight: var(--weight-semibold);
+  color: #8C1D18;
+}
+
+.sv-check__feld input[aria-invalid="true"] {
+  border-color: #8C1D18;
+}
+
+/* Sichtbarer Fokus für alles, was man im Check mit der Tastatur erreicht.
+   Die Knöpfe heben sich zwar beim Fokus, das allein ist aber zu leise. */
+#check .sv-button:focus-visible,
+#check a:focus-visible {
+  outline: 2px solid var(--ink-900);
+  outline-offset: 3px;
+}
+
+/* Nur für Screenreader: die Ansage je Schritt */
+.sv-check__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Ladeansicht: sechs Schritte ── */
+.sv-check__ladend:not([hidden]) {
+  display: block;
+  width: min(100%, 40rem);
+  margin: var(--space-9) auto 0;
+  padding: var(--space-6) var(--space-7);
+  box-sizing: border-box;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+  text-align: left;
+}
+
+.sv-check__ladend-kopf {
+  margin: 0 0 var(--space-5);
+  font-size: var(--text-body-sm);
+  color: var(--text-body);
+  overflow-wrap: anywhere;
+}
+
+.sv-check__ladend-kopf strong {
+  color: var(--text-strong);
+}
+
+.sv-check__schritte {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sv-check__schritt {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 4px var(--space-3);
+}
+
+.sv-check__schritt-zeichen {
+  position: relative;
+  width: 22px;
+  height: 22px;
+  margin-top: 1px;
+  box-sizing: border-box;
+  border: 2px solid var(--border-strong);
+  border-radius: 50%;
+}
+
+.sv-check__schritt[data-zustand="laeuft"] .sv-check__schritt-zeichen {
+  border-color: var(--border-soft);
+  border-top-color: var(--terra-500);
+  border-right-color: var(--terra-500);
+  animation: sv-check-dreh 0.9s linear infinite;
+}
+
+.sv-check__schritt[data-zustand="fertig"] .sv-check__schritt-zeichen {
+  border-color: var(--terra-500);
+  background: var(--terra-500);
+}
+
+/* Haken aus zwei Rändern */
+.sv-check__schritt[data-zustand="fertig"] .sv-check__schritt-zeichen::after {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid var(--cream-50);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.sv-check__schritt[data-zustand="fehler"] .sv-check__schritt-zeichen {
+  border-color: #8C1D18;
+  background: #8C1D18;
+}
+
+/* Kreuz aus zwei Strichen */
+.sv-check__schritt[data-zustand="fehler"] .sv-check__schritt-zeichen::before,
+.sv-check__schritt[data-zustand="fehler"] .sv-check__schritt-zeichen::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 10px;
+  height: 2px;
+  background: var(--cream-50);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.sv-check__schritt[data-zustand="fehler"] .sv-check__schritt-zeichen::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+@keyframes sv-check-dreh {
+  to { transform: rotate(360deg); }
+}
+
+.sv-check__schritt-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.sv-check__schritt-titel {
+  font-size: var(--text-ui);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-snug);
+  color: var(--text-strong);
+}
+
+.sv-check__schritt-unter {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-body);
+  transition: opacity 0.26s ease;
+}
+
+.sv-check__schritt-unter.ist-weg {
+  opacity: 0;
+}
+
+.sv-check__schritt[data-zustand="wartet"] .sv-check__schritt-titel {
+  color: var(--text-body);
+  font-weight: var(--weight-medium);
+}
+
+.sv-check__schritt-wort {
+  padding-top: 3px;
+  font-family: var(--font-mono);
+  font-size: var(--text-overline);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-badge);
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--brown-600);
+}
+
+.sv-check__schritt[data-zustand="laeuft"] .sv-check__schritt-wort { color: var(--terra-600); }
+.sv-check__schritt[data-zustand="fertig"] .sv-check__schritt-wort { color: #1B5E33; }
+.sv-check__schritt[data-zustand="fehler"] .sv-check__schritt-wort { color: #8C1D18; }
+
+/* ── Fehler beim Check: Text und «Nochmals prüfen» ── */
+.sv-check__problem:not([hidden]) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  width: min(100%, 40rem);
+  margin: var(--space-5) auto 0;
+  padding: var(--space-5) var(--space-6);
+  box-sizing: border-box;
+  border: 1px solid #8C1D18;
+  border-radius: var(--radius-lg);
+  background: var(--peach-100);
+}
+
+.sv-check__problem p {
+  margin: 0;
+  font-size: var(--text-body-sm);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-body);
+  color: #8C1D18;
+}
+
+.sv-check__problem .sv-button[hidden] {
+  display: none;
+}
+
+/* ── Ergebnis ── */
+.sv-check__report {
+  width: min(100%, 64rem);
+  margin: var(--space-9) auto 0;
+  padding-top: var(--space-9);
+  border-top: 1px solid var(--border-strong);
+  text-align: left;
+}
+
+.sv-check__report:focus {
+  outline: none;
+}
+
+.sv-check__report-kopf {
+  display: flex;
+  align-items: center;
+  gap: var(--space-7);
+}
+
+.sv-check__ring {
+  flex: 0 0 auto;
+  width: 8.5rem;
+  height: 8.5rem;
+}
+
+.sv-check__ring-spur {
+  fill: none;
+  stroke: var(--sand-200);
+  stroke-width: 10;
+}
+
+.sv-check__ring-wert {
+  fill: none;
+  stroke: var(--terra-500);
+  stroke-width: 10;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1.1s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.sv-check__ring-zahl {
+  font-family: var(--font-sans);
+  font-size: 36px;
+  font-weight: var(--weight-bold);
+  letter-spacing: -0.02em;
+  fill: var(--text-strong);
+}
+
+.sv-check__ring-von {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  fill: var(--brown-600);
+}
+
+.sv-check__report-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.sv-check__report-text h3 {
+  margin: 2px 0 0;
+  font-size: var(--text-h3);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-strong);
+  overflow-wrap: anywhere;
+}
+
+.sv-check__report-datum {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-ui);
+  color: var(--brown-600);
+}
+
+.sv-check__report-fazit {
+  max-width: 62ch;
+  margin: var(--space-3) 0 0;
+  font-size: var(--text-lead);
+  line-height: var(--leading-relaxed);
+  color: var(--text-body);
+}
+
+/* «Grösstes Potenzial»: die hervorgehobene Karte mit Etikett, Text links,
+   darum sitzt auch das Etikett links statt mittig. */
+.sv-check__potenzial {
+  margin-top: var(--space-11);
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: 27px 27px 25px;
+  text-align: left;
+}
+
+.sv-check__potenzial[hidden] {
+  display: none;
+}
+
+.sv-check__report .sv-check__potenzial .sv-card__etikett {
+  left: var(--space-6);
+  transform: translateY(-50%);
+}
+
+.sv-check__potenzial h4 {
+  margin: 0;
+  font-size: var(--text-h3);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-strong);
+}
+
+.sv-check__report .sv-check__potenzial p:not(.sv-card__etikett) {
+  max-width: 68ch;
+  font-size: var(--text-size-body);
+  line-height: var(--leading-body);
+  color: var(--text-body);
+}
+
+.sv-check__potenzial .sv-label[hidden] {
+  display: none;
+}
+
+/* Bereiche: der offene über die ganze Breite, die drei anderen daneben */
+.sv-check__bereiche {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  gap: var(--space-5);
+  margin-top: var(--space-7);
+}
+
+.sv-check__bereich {
+  align-items: stretch;
+  gap: var(--space-4);
+  text-align: left;
+}
+
+.sv-check__bereich--offen {
+  grid-column: 1 / -1;
+}
+
+.sv-check__bereich-kopf {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.sv-check__bereich-kopf > div:first-child {
+  min-width: 0;
+}
+
+.sv-check__bereich-kopf h4 {
+  margin: 4px 0 0;
+  font-size: var(--text-h4);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-snug);
+  color: var(--text-strong);
+  overflow-wrap: break-word;
+}
+
+.sv-check__punkte {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.sv-check__report .sv-check__punkte-zahl {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-ui);
+  color: var(--brown-600);
+  white-space: nowrap;
+}
+
+.sv-check__punkte-zahl strong {
+  font-family: var(--font-sans);
+  font-size: 22px;
+  font-weight: var(--weight-bold);
+  color: var(--text-strong);
+}
+
+.sv-check__balken {
+  display: block;
+  width: 5.5rem;
+  height: 6px;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: rgba(28, 22, 19, 0.12);
+}
+
+.sv-check__balken span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--terra-500);
+}
+
+.sv-check__report .sv-check__bereich-fazit {
+  max-width: 72ch;
+  font-size: var(--text-size-body);
+  line-height: var(--leading-body);
+  color: var(--text-body);
+}
+
+.sv-check__befunde {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sv-check__bereich--offen .sv-check__befunde {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+  column-gap: var(--space-9);
+}
+
+.sv-check__befund {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: var(--space-3) 0;
+  border-top: 1px solid var(--border-soft);
+}
+
+.sv-check__befund-kopf {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.sv-check__befund-kopf h5 {
+  min-width: 0;
+  margin: 0;
+  font-size: var(--text-body-sm);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-snug);
+  color: var(--text-strong);
+  overflow-wrap: break-word;
+}
+
+.sv-check__status {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: var(--text-overline);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-badge);
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--text-strong);
+}
+
+.sv-check__status-punkt {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--brown-600);
+}
+
+.sv-check__status[data-status="gut"] .sv-check__status-punkt     { background: #2E7D4F; }
+.sv-check__status[data-status="mittel"] .sv-check__status-punkt  { background: #9A6A00; }
+.sv-check__status[data-status="schwach"] .sv-check__status-punkt { background: #B3261E; }
+
+.sv-check__report .sv-check__befund-text,
+.sv-check__report .sv-check__empfehlung {
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body);
+  color: var(--text-body);
+}
+
+.sv-check__empfehlung strong {
+  color: var(--text-strong);
+}
+
+/* Platzhalter statt Text in den Vorschau-Bereichen — rein dekorativ */
+.sv-check__platzhalter {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sv-check__platzhalter span {
+  display: block;
+  height: 9px;
+  border-radius: var(--radius-pill);
+  background: rgba(28, 22, 19, 0.10);
+}
+
+.sv-check__platzhalter span:last-child {
+  width: 62%;
+}
+
+.sv-check__schloss {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  font-size: var(--text-ui);
+  font-weight: var(--weight-semibold);
+  color: var(--terra-600);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.sv-check__schloss:hover {
+  color: var(--terra-700);
+}
+
+/* ── Bericht bestellen ── */
+.sv-check__bestellen {
+  margin-top: var(--space-11);
+  padding: var(--card-pad);
+  box-sizing: border-box;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--surface-card-sand);
+  scroll-margin-top: 100px;
+}
+
+.sv-check__bestellen h3 {
+  margin: 0;
+  text-align: center;
+  font-size: var(--text-h3);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-strong);
+}
+
+.sv-check__bestellen-lead {
+  max-width: 52ch;
+  margin: var(--space-3) auto 0;
+  text-align: center;
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body);
+  color: var(--text-body);
+  overflow-wrap: anywhere;
+}
+
+.sv-check__bestell-form {
+  margin-top: var(--space-7);
+}
+
+.sv-check__bestell-form[hidden] {
+  display: none;
+}
+
+.sv-check__bestell-form input:focus-visible {
+  box-shadow: 0 0 0 3px rgba(178, 82, 34, 0.28);
+}
+
+.sv-check__bestell-form input[aria-invalid="true"] {
+  border-color: #8C1D18;
+}
+
+.sv-check__bestell-form .vc-kontakt__hinweis a {
+  color: var(--terra-600);
+  text-underline-offset: 3px;
+}
+
+.sv-check__bestell-form .vc-kontakt__meldung:empty {
+  display: none;
+}
+
+.sv-check__bestell-form .vc-kontakt__meldung a {
+  color: inherit;
+}
+
+/* Honigtopf: für Menschen unsichtbar, für Bots ein Feld wie jedes andere */
+.sv-check__bestell-form .sv-check__fangfrage {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+}
+
+.sv-check__danke {
+  max-width: 52ch;
+  margin: var(--space-7) auto 0;
+  text-align: center;
+  font-size: var(--text-lead);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-body);
+  color: #1B5E33;
+}
+
+.sv-check__danke:focus {
+  outline: none;
+}
+
+/* ── Domainfeld im Kopf der Startseite (index.html, check-start.js) ──
+   Auf Terracotta: Feld in Creme wie die hellen Knöpfe daneben, Fokus als
+   heller Ring. Der Hinweis bei falscher Eingabe steht unter der Zeile. */
+.sv-start {
+  width: min(100%, 46rem);
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.sv-start__feld {
+  flex: 0 1 17rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+}
+
+.sv-start__label {
+  padding-left: var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--text-overline);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-badge);
+  text-transform: uppercase;
+  color: var(--cream-50);
+}
+
+.sv-start__feld input {
+  width: 100%;
+  min-height: var(--space-13);
+  padding: 0 var(--space-5);
+  box-sizing: border-box;
+  border: 2px solid transparent;
+  border-radius: var(--radius-pill);
+  background: var(--cream-card);
+  box-shadow: var(--shadow-cta);
+  font-family: var(--font-sans);
+  font-size: var(--text-size-body);
+  font-weight: var(--weight-medium);
+  color: var(--text-strong);
+}
+
+.sv-start__feld input::placeholder {
+  color: var(--brown-400);
+}
+
+.sv-start__feld input:focus {
+  outline: 3px solid var(--cream-50);
+  outline-offset: 2px;
+}
+
+.sv-start__feld input[aria-invalid="true"] {
+  border-color: #8C1D18;
+}
+
+.sv-start .sv-button {
+  flex: 0 0 auto;
+}
+
+/* Die Feldbeschriftung macht den Kopf 22px höher; die nimmt der Bot ab,
+   damit der Kopf weiterhin auf den Bildschirm passt (siehe oben, 697px). */
+@media (min-width: 1025px) {
+  .sv-hero:has(.sv-start) .sv-hero__visual:has(.sv-hero__robot--frei) {
+    height: clamp(120px, calc(100vh - 719px), 308px);
+    height: clamp(120px, calc(100svh - 719px), 308px);
+  }
+}
+
+.sv-start .sv-button:focus-visible {
+  outline: 3px solid var(--cream-50);
+  outline-offset: 3px;
+}
+
+.sv-start__fehler {
+  order: 1;   /* auf breiten Schirmen unter die ganze Zeile */
+  flex-basis: 100%;
+  margin: 0;
+  font-size: var(--text-body-sm);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-snug);
+  color: var(--cream-50);
+}
+
+.sv-start__fehler::before {
+  content: "! ";
+}
+
+@media (max-width: 700px) {
+  .sv-check__form {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-5);
+  }
+
+  /* In der Spalte wuerde die Basis 20rem zur Hoehe: ein Loch von 320px zwischen Feld und Knopf */
+  .sv-check__feld {
+    flex: 0 0 auto;
+  }
+
+  .sv-check__form .sv-button {
+    width: 100%;
+  }
+
+  .sv-check__ladend:not([hidden]) {
+    padding: var(--space-5) var(--space-4);
+  }
+
+  /* Zustandswort unter den Titel, damit der Text die ganze Breite hat */
+  .sv-check__schritt {
+    grid-template-columns: 22px minmax(0, 1fr);
+  }
+
+  .sv-check__schritt-wort {
+    grid-column: 2;
+    padding-top: 0;
+  }
+
+  .sv-check__problem:not([hidden]) {
+    padding: var(--space-5) var(--space-4);
+  }
+
+  .sv-check__problem .sv-button {
+    width: 100%;
+  }
+
+  .sv-check__report {
+    margin-top: var(--space-7);
+    padding-top: var(--space-7);
+  }
+
+  .sv-check__report-kopf {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-5);
+  }
+
+  .sv-check__ring {
+    width: 7rem;
+    height: 7rem;
+  }
+
+  .sv-check__potenzial {
+    padding: 27px 19px 21px;
+  }
+
+  .sv-check__report .sv-check__potenzial .sv-card__etikett {
+    left: var(--space-4);
+  }
+
+  .sv-check__bereich--offen .sv-check__befunde {
+    grid-template-columns: 1fr;
+  }
+
+  .sv-check__befund-kopf {
+    flex-wrap: wrap;
+  }
+
+  .sv-check__bestellen {
+    padding: var(--space-6) var(--space-4);
+  }
+
+  /* In der Spalte volle Breite wie die Knöpfe (.sv-start setzt oben flex-end) */
+  .sv-start {
+    flex-wrap: nowrap;
+    align-items: stretch;
+  }
+
+  /* Wie beim Check-Feld: in der Spalte keine Basis als Höhe */
+  .sv-start__feld {
+    flex: 0 0 auto;
+  }
+
+  .sv-start__fehler {
+    order: 0;          /* auf dem Handy direkt unters Feld */
+    flex-basis: auto;  /* 100% hiesse in der Spalte: volle Höhe */
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sv-check__schritt[data-zustand="laeuft"] .sv-check__schritt-zeichen {
+    animation: none;
+    border-color: var(--terra-500);
+  }
+
+  .sv-check__schritt-unter,
+  .sv-check__ring-wert,
+  .sv-check__feld input {
+    transition: none;
+  }
+}
+
+/* Faktenblock «Kurz gesagt» unter dem Hero der Angebotsseiten (07.10.2026, Philip:
+   schlicht statt weisser Kasten). Kein Rahmen, keine Fläche: ein Mono-Kicker als
+   Titel, darunter drei Spalten mit je zwei Paaren, jedes Paar mit einer Haarlinie
+   darüber. Die Paare laufen spaltenweise (dt, dd, dt, dd = vier Zeilen je Spalte). */
+.sv-fakten {
+  width: min(100%, 60rem);
+  margin: 0 auto;
+  padding: 0;
+  text-align: left;
+}
+
+.sv-fakten__titel {
+  margin: 0 0 var(--space-5);
+  font-family: var(--font-mono);
+  font-size: var(--text-kicker);
+  line-height: var(--leading-snug);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-kicker);
+  text-transform: uppercase;
+  color: var(--terra-600);
+}
+
+.sv-fakten dl {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(4, auto);
+  grid-auto-flow: column;
+  column-gap: var(--space-8);
+  margin: 0;
+}
+
+.sv-fakten dt {
+  margin: 0;
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border-strong);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: var(--leading-snug);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--terra-600);
+}
+
+.sv-fakten dd {
+  margin: 6px 0 var(--space-6);
+  color: var(--text-body);
+  line-height: var(--leading-body);
+}
+
+@media (max-width: 760px) {
+  .sv-fakten dl {
+    grid-template-columns: 1fr;
+    grid-template-rows: none;
+    grid-auto-flow: row;
+  }
+
+  .sv-fakten dd {
+    margin-bottom: var(--space-5);
+  }
+}
+
+/* «Kurz gesagt» ausgeblendet (09.10.2026, Philip): bleibt im HTML für Suchmaschinen
+   und Vorleser, ist aber unsichtbar und nimmt keinen Platz ein. Kein display:none,
+   damit Google den Text weiterhin liest. */
+.sv-nur-crawler {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Preislogik 2026-10: die zwei bezahlten Stufen und die Betreuung, leise unter
+   dem Ergebnis. Der Gratis-Check bleibt der sichtbare Hauptweg; hier nur eine
+   ruhige Liste, Preis rechts in Mono wie die Preiszeilen der Karten. */
+.vs-stufen {
+  text-align: left;
+  width: min(100%, 48rem);
+  margin: var(--space-11) auto 0;
+}
+.vs-stufen__titel {
+  margin: var(--space-7) 0 var(--space-3);
+  color: var(--text-strong);
+  font-size: var(--text-h3);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-tight);
+  font-weight: var(--weight-semibold);
+}
+.vs-stufen__titel:first-child { margin-top: 0; }
+.vs-stufen__liste { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--border-strong); }
+.vs-stufen__liste li {
+  display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-5);
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid var(--border-strong);
+}
+.vs-stufen__liste li > div { min-width: 0; }
+.vs-stufen__liste strong {
+  display: block;
+  color: var(--text-strong);
+  font-weight: var(--weight-semibold);
+}
+.vs-stufen__liste li > div > span {
+  display: block;
+  margin-top: 2px;
+  color: var(--text-body);
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body);
+}
+.vs-stufen__preis {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: var(--text-overline);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-badge);
+  text-transform: uppercase;
+  color: var(--terra-600);
+}
+.vs-stufen__satz {
+  margin: var(--space-5) 0 0;
+  color: var(--text-muted);
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-body);
+}
+@media (max-width: 560px) {
+  .vs-stufen__liste li { flex-direction: column; gap: var(--space-2); }
+}
+
+/* Preislogik 2026-10: kein einzelnes Wort in der letzten Hero-Zeile */
+.sv-hero__lead { text-wrap: pretty; }

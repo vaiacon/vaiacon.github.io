@@ -1,0 +1,150 @@
+/* Lernreise, Formate, kleine Schritte (KI-Kompetenz, seit 04.10.2026)
+   Nur für learning.html. Farben, Schriften, Abstände aus tokens/*.css; die
+   Grundklassen (sv-section, sv-wrap, sv-card, sv-button) kommen aus
+   visibility.css. Karten ohne Schatten (Hairline), Schatten nur warm-braun. */
+
+.lr-wrap-links { text-align: left; }
+
+/* ── Auswahl ───────────────────────────────────────────────────────────
+   Ein Kasten, drei Zeilen: links die Frage, rechts drei gleich breite
+   Felder. Darunter hängt die Zusammenfassung als Fuss desselben Kastens. */
+/* Schwebend steht die Frage neben den Feldern statt auf dem Rahmen. */
+/* Format-Links unter den Stationen der Zeitleiste */
+.lr-chip {
+  display: inline-block; padding: 5px 12px;
+  border: 1px solid var(--border-strong); border-radius: var(--radius-pill);
+  background: var(--peach-150); color: var(--terra-600);
+  font-size: 13px; font-weight: var(--weight-bold); text-decoration: none; line-height: 1.3;
+}
+.lr-chip:hover, .lr-chip:focus-visible { background: var(--peach-200); }
+
+/* ── Formate ─────────────────────────────────────────────────────────── */
+.lr-formate {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: var(--space-4);
+  margin-top: var(--space-11);
+}
+.lr-format {
+  --lr-spalten: 4;
+  flex: 0 0 calc((100% - (var(--lr-spalten) - 1) * var(--space-4)) / var(--lr-spalten));
+  min-width: 0;
+  scroll-margin-top: 96px;
+  display: flex; flex-direction: column; align-items: stretch;
+  padding: 0 var(--space-5) var(--space-6);
+  box-sizing: border-box;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--surface-card);
+  text-align: left;
+  overflow: hidden;
+}
+.lr-format__bild {
+  margin: 0 calc(-1 * var(--space-5)) var(--space-4);
+  height: 190px;
+  display: flex; align-items: flex-end; justify-content: center;
+  padding-top: var(--space-4);
+  background: radial-gradient(70% 70% at 50% 60%, var(--peach-200) 0%, var(--peach-150) 55%, var(--sand-200) 100%);
+  border-bottom: 1px solid var(--border-strong);
+  box-sizing: border-box;
+}
+.lr-format__bild img { height: 100%; width: auto; max-width: 92%; object-fit: contain; object-position: center bottom; display: block; }
+.lr-format h3 { margin: 0 0 var(--space-3); color: var(--text-strong); font-size: var(--text-h3); line-height: var(--leading-snug); letter-spacing: var(--tracking-tight); font-weight: var(--weight-semibold); }
+.lr-format p { margin: 0 0 var(--space-3); color: var(--text-body); font-size: var(--text-body-sm); line-height: var(--leading-body); }
+.lr-format p strong { color: var(--terra-600); font-weight: var(--weight-bold); }
+.lr-format__preis {
+  margin: auto 0 0 !important;
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border-strong);
+  font-family: var(--font-mono);
+  font-size: var(--text-overline) !important;
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-badge);
+  text-transform: uppercase;
+  color: var(--terra-600) !important;
+  line-height: 1.55 !important;
+}
+.lr-format__preis span { white-space: nowrap; }
+.lr-format__preis small { display: block; text-transform: none; letter-spacing: 0; font-family: var(--font-sans); font-weight: var(--weight-medium); color: var(--text-muted); font-size: 12.5px; margin-top: 2px; }
+
+.lr-satz { margin: var(--space-9) auto 0; max-width: 62ch; color: var(--text-body); font-size: var(--text-lead); line-height: var(--leading-relaxed); }
+.lr-satz strong { color: var(--text-strong); }
+
+/* ── Kleine Schritte, jeden Tag ──────────────────────────────────────── */
+.lr-tage { margin: var(--space-11) auto 0; width: min(100%, 64rem); }
+.lr-tage__liste {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--space-3);
+}
+.lr-tag {
+  display: flex; flex-direction: column; gap: 6px;
+  padding: var(--space-4) var(--space-3);
+  min-height: 150px;
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  border-radius: var(--radius-md);
+  background: rgba(255, 253, 248, 0.12);
+  text-align: left;
+  color: var(--text-on-terra);
+}
+.lr-tag__name { font-family: var(--font-mono); font-size: var(--text-overline); font-weight: var(--weight-bold); letter-spacing: var(--tracking-badge); text-transform: uppercase; color: var(--peach-200); }
+.lr-tag__min { font-family: var(--font-mono); font-size: 12px; color: rgba(255, 240, 230, 0.8); }
+.lr-tag h3 { margin: 0; font-size: 15.5px; line-height: 1.25; font-weight: var(--weight-bold); color: var(--cream-50); }
+.lr-tag p { margin: 0; font-size: 13.5px; line-height: 1.45; color: var(--text-on-terra-soft); }
+
+.lr-kurve {
+  margin: var(--space-11) auto 0;
+  width: min(100%, 56rem);
+  padding: var(--space-6);
+  border: 2px solid var(--border-ink);
+  border-radius: var(--radius-xl);
+  background: var(--surface-card);
+  box-shadow: var(--shadow-comic);
+  color: var(--text-strong);
+  text-align: left;
+  box-sizing: border-box;
+}
+.lr-kurve__kopf { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-2); align-items: baseline; }
+.lr-kurve__kopf h3 { margin: 0; font-size: var(--text-h3); font-weight: var(--weight-semibold); letter-spacing: var(--tracking-tight); }
+.lr-kurve__etikett {
+  padding: 5px 12px; border: 1px solid var(--border-strong); border-radius: var(--radius-pill);
+  background: var(--peach-150); color: var(--terra-600);
+  font-family: var(--font-mono); font-size: 11px; font-weight: var(--weight-bold); letter-spacing: 0.12em; text-transform: uppercase;
+}
+.lr-kurve svg { display: block; width: 100%; height: auto; margin-top: var(--space-4); }
+.lr-kurve svg text { font-family: var(--font-sans); fill: var(--brown-600); font-size: 13px; }
+.lr-kurve svg .lr-k-achse { stroke: var(--brown-400); stroke-width: 1.5; fill: none; }
+.lr-kurve svg .lr-k-einmal { stroke: var(--brown-400); stroke-width: 3.5; fill: none; stroke-linecap: round; stroke-dasharray: 2 8; }
+.lr-kurve svg .lr-k-taeglich { stroke: var(--terra-500); stroke-width: 4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.lr-kurve svg .lr-k-punkt { fill: var(--terra-500); }
+.lr-kurve svg .lr-k-tag { fill: var(--terra-600); font-weight: 700; }
+.lr-kurve__fuss { margin: var(--space-3) 0 0; font-size: 13.5px; line-height: 1.5; color: var(--text-body); }
+.lr-kurve__fuss a { color: var(--terra-600); font-weight: var(--weight-bold); }
+.lr-legende { display: flex; flex-wrap: wrap; gap: var(--space-5); margin: var(--space-3) 0 0; padding: 0; list-style: none; font-size: 14px; color: var(--text-strong); font-weight: var(--weight-semibold); }
+.lr-legende li { display: flex; align-items: center; gap: 8px; }
+.lr-legende i { display: inline-block; width: 28px; height: 0; border-top: 4px solid var(--terra-500); border-radius: 4px; }
+.lr-legende i.lr-l-einmal { border-top: 4px dotted var(--brown-400); }
+
+/* ── Für wen / wie wir arbeiten ──────────────────────────────────────── */
+.lr-zwei { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); margin-top: var(--space-11); text-align: left; }
+.lr-zwei .sv-card { align-items: flex-start; text-align: left; }
+.lr-liste-punkte { margin: 0; padding: 0; list-style: none; display: grid; gap: 10px; }
+.lr-liste-punkte li { position: relative; padding-left: 26px; color: var(--text-body); font-size: var(--text-body-sm); line-height: var(--leading-body); }
+.lr-liste-punkte li::before { content: "→"; position: absolute; left: 0; color: var(--terra-500); font-weight: 700; }
+
+/* ── Handy und Tablet ────────────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .lr-format { --lr-spalten: 3; }
+  .lr-tage__liste { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+}
+
+@media (max-width: 860px) {
+  .lr-format { --lr-spalten: 2; }
+  .lr-tage__liste { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lr-zwei { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .lr-format { --lr-spalten: 1; }
+  .lr-tage__liste { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lr-tag { min-height: 0; }
+  .lr-kurve { padding: var(--space-4); }
+}
+

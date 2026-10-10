@@ -1,0 +1,267 @@
+/* Preismatrix Automationen (bot.html): Drei Spalten nach Grösse des Schritts (Einfache Automation, Mittelgrosse Automation, Komplette Automation). Die Dauer steht je Beispiel als Information, sie bestimmt den Preis nicht.
+   Farben, Schriften, Radien aus tokens/. Preise der Ankerzellen kommen über
+   data-preis aus daten/preise.json, die Zwischenwerte stehen im HTML. */
+
+.pm-wrap { text-align: left; }
+
+.pm-scroll { margin-top: var(--space-9); }
+
+.pm-matrix {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+.pm-spalte { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+/* Spaltenköpfe gleich hoch: jede Spalte teilt die Zeilen des Rasters (Kopf + drei Karten). */
+@supports (grid-template-rows: subgrid) {
+  .pm-matrix { grid-template-rows: auto auto auto auto; }
+  .pm-spalte { display: grid; grid-template-rows: subgrid; grid-row: span 4; row-gap: 10px; }
+}
+
+/* Spaltenkopf: Sprosse, Erklärung, Beispiel, Nutzen, ab-Preis */
+.pm-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 16px 14px;
+  background: var(--bg-alt);
+  border-radius: var(--radius-md);
+  border-bottom: 3px solid var(--border-ink);
+  color: var(--text-body);
+  font-size: 15px;
+  line-height: 1.4;
+}
+.pm-col__kopf { display: flex; align-items: center; gap: 10px; }
+.pm-col__kopf i {
+  font-style: normal;
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-xs);
+  background: var(--peach-150);
+  color: var(--terra-600);
+  font-weight: var(--weight-bold);
+  font-size: 13px;
+}
+.pm-col__kopf b { font-size: 20px; color: var(--text-strong); }
+.pm-col small { display: block; font-size: 15px; font-weight: var(--weight-semibold); color: var(--text-strong); }
+.pm-col__bsp { font-style: italic; color: var(--text-strong); }
+.pm-col__gewinn, .pm-col__ab { display: block; padding-top: 8px; border-top: 1px solid var(--border-soft); color: var(--text-strong); }
+.pm-col em {
+  display: block;
+  font-style: normal;
+  font-size: var(--text-overline);
+  letter-spacing: var(--tracking-badge);
+  text-transform: uppercase;
+  font-weight: var(--weight-bold);
+  color: var(--terra-600);
+  margin-bottom: 2px;
+}
+.pm-col__ab { font-family: var(--font-mono); font-size: 21px; font-weight: var(--weight-bold); font-variant-numeric: tabular-nums; letter-spacing: var(--tracking-tight); }
+
+/* Beispielkarte: Name + Preis, Satz, Dauer als Information */
+.pm-cell {
+  font: inherit;
+  color: var(--text-strong);
+  text-align: left;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas: "name preis" "satz satz" "dauer dauer";
+  column-gap: 12px;
+  row-gap: 6px;
+  align-items: baseline;
+  padding: 14px 16px;
+  background: var(--surface-card);
+  border: 1.5px solid var(--border-ink);
+  border-radius: var(--radius-sm);
+  scroll-margin-top: 12px;
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+}
+.pm-cell__name { grid-area: name; font-size: 18px; font-weight: var(--weight-bold); color: var(--text-strong); line-height: 1.3; }
+.pm-cell__preis {
+  display: none; /* 09.10. Philip: erst Verständnis, dann Kosten; Preis steht in der Detailkarte */
+  grid-area: preis;
+  font-size: 20px;
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tight);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.05;
+  text-align: right;
+  white-space: nowrap;
+}
+.pm-cell__satz { grid-area: satz; font-size: 15px; line-height: 1.4; color: var(--text-body); }
+.pm-cell__dauer { grid-area: dauer; font-size: 13.5px; font-weight: var(--weight-medium); color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.pm-cell__dauer::before { content: "\25F7\00a0"; }
+.pm-cell__tag { display: none; }
+@media (prefers-reduced-motion: reduce) {
+  .pm-cell { transition: none; }
+}
+
+/* Handy (bis 700 px): Schrittwahl + eine Spalte statt drei */
+.pm-schritt { display: none; }
+@media (max-width: 860px) {
+  .pm-matrix { grid-template-columns: 1fr; }
+}
+@media (max-width: 700px) {
+  .pm-scroll { margin-top: var(--space-6); }
+  .pm-matrix { display: flex; flex-direction: column; gap: 12px; }
+  .pm-spalte { display: contents; }
+  .pm-col { display: none; }
+
+  .pm-schritt { display: block; }
+  .pm-schritt__leiste {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+    padding: 4px;
+    background: var(--bg-alt);
+    border: 1.5px solid var(--border-ink);
+    border-radius: var(--radius-md);
+  }
+  .pm-schritt__leiste button {
+    font: inherit;
+    font-weight: var(--weight-bold);
+    font-size: 15px;
+    line-height: 1.2;
+    min-height: 48px;
+    padding: 6px 4px;
+    color: var(--text-strong);
+    background: transparent;
+    border: 0;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+  }
+  .pm-schritt__leiste button.ist-an {
+    background: var(--grad-package);
+    color: var(--text-on-terra);
+    box-shadow: var(--shadow-soft);
+  }
+  .pm-schritt__leiste button:focus-visible { outline: 3px solid var(--orange-500); outline-offset: 2px; }
+  .pm-schritt__mehr { display: grid; gap: 10px; margin: 0 2px 14px; font-size: 15px; line-height: 1.4; }
+  .pm-schritt__mehr:empty { display: none; }
+  .pm-schritt__mehr .pm-col__bsp { font-style: italic; color: var(--text-strong); }
+  .pm-schritt__mehr .pm-col__gewinn { display: block; padding-top: 8px; border-top: 1px solid var(--border-soft); color: var(--text-strong); }
+  .pm-schritt__mehr em {
+    display: block;
+    font-style: normal;
+    font-size: var(--text-overline);
+    letter-spacing: var(--tracking-badge);
+    text-transform: uppercase;
+    font-weight: var(--weight-bold);
+    color: var(--terra-600);
+    margin-bottom: 2px;
+  }
+  .pm-schritt__hilfe { margin: 12px 2px 10px; font-size: 15px; line-height: 1.4; color: var(--text-body); min-height: 3em; }
+
+  .pm-matrix[data-spalte="Einfache Automation"] .pm-cell:not([data-komplexitaet="Einfache Automation"]),
+  .pm-matrix[data-spalte="Mittelgrosse Automation"] .pm-cell:not([data-komplexitaet="Mittelgrosse Automation"]),
+  .pm-matrix[data-spalte="Komplette Automation"] .pm-cell:not([data-komplexitaet="Komplette Automation"]) { display: none; }
+
+  .pm-cell { row-gap: 4px; }
+  .pm-cell__name { font-size: 19px; }
+
+}
+
+/* ── Branchen-Umschalter: was die drei Sprossen in einer Branche heissen ──
+   Sätze aus daten/branchen.json (branchen.js), erste Branche steht im HTML. */
+.pm-branchen { margin: 28px auto 0; max-width: 1040px; text-align: left; }
+.pm-branchen__frage { margin: 0 0 10px; text-align: center; font-weight: var(--weight-semibold); color: var(--text-strong); font-size: var(--text-ui); }
+.pm-branchen__chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.pm-branchen__chips button {
+  font: inherit;
+  font-size: 15px;
+  line-height: 1.2;
+  font-weight: var(--weight-semibold);
+  width: 128px;
+  padding: 10px 8px 12px;
+  border-radius: 18px;
+  border: 1.5px solid var(--border-ink);
+  background: var(--surface-card);
+  color: var(--text-strong);
+  cursor: pointer;
+  display: inline-flex; flex-direction: column; align-items: center; gap: 8px;
+  text-align: center;
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+}
+.pm-branchen__ico { flex: none; width: 96px; height: 96px; border-radius: 14px; background: var(--cream-50); object-fit: contain; }
+.pm-branchen__chips button[aria-selected="true"] .pm-branchen__ico { box-shadow: 0 0 0 2px rgba(255,255,255,.7); }
+.pm-branchen__chips button:hover { transform: translate(-1px, -1px); box-shadow: 2px 2px 0 var(--border-ink); }
+.pm-branchen__chips button[aria-selected="true"] { background: var(--accent); color: var(--text-on-terra); border-color: var(--accent); }
+.pm-branchen__chips button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.pm-branchen__karten { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 14px; }
+.pm-branchen__karte {
+  min-width: 0;
+  padding: 12px 14px 14px;
+  background: var(--surface-card);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+}
+.pm-branchen__sprosse { display: flex; align-items: center; gap: 8px; margin: 0 0 6px; font-size: var(--text-overline); letter-spacing: var(--tracking-badge); text-transform: uppercase; font-weight: var(--weight-bold); color: var(--accent); }
+.pm-branchen__sprosse i {
+  font-style: normal;
+  display: inline-grid; place-items: center;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--peach-150); color: var(--terra-600);
+  font-family: var(--font-mono, "IBM Plex Mono", monospace); font-size: 11.5px; letter-spacing: 0;
+}
+.pm-branchen__nervt {
+  margin-top: 18px;
+  padding: 20px 24px 22px;
+  background: var(--terra-500);
+  color: var(--cream-50);
+  border: 1.5px solid var(--border-ink);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-comic);
+}
+.pm-branchen__nervt[hidden] { display: none; }
+.pm-branchen__nervt b {
+  display: block;
+  margin-bottom: 12px;
+  font-family: var(--font-display, "Quicksand", sans-serif);
+  font-size: 24px;
+  line-height: 1.15;
+  font-weight: var(--weight-bold);
+  color: #fff;
+}
+.pm-branchen__nervt b::before {
+  content: "";
+  display: inline-block;
+  width: 10px; height: 10px;
+  margin: 0 10px 2px 0;
+  border-radius: 50%;
+  background: var(--peach-200);
+  vertical-align: middle;
+}
+.pm-branchen__nervt ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px 22px; }
+.pm-branchen__nervt li {
+  position: relative;
+  padding-left: 26px;
+  font-size: 16.5px;
+  line-height: 1.4;
+  font-weight: var(--weight-semibold);
+  color: #fff;
+}
+.pm-branchen__nervt li::before {
+  content: "✕";
+  position: absolute; left: 0; top: 1px;
+  font-family: var(--font-mono, "IBM Plex Mono", monospace);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--peach-200);
+}
+.pm-branchen__liste { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.pm-branchen__liste li { margin: 0; font-size: 14px; line-height: 1.4; color: var(--brown-600, var(--text-body)); }
+.pm-branchen__liste b { display: block; font-family: var(--font-display, "Quicksand", sans-serif); font-weight: var(--weight-bold); font-size: 15px; color: var(--text-strong); }
+@media (max-width: 820px) {
+  .pm-branchen__karten { grid-template-columns: 1fr; }
+  .pm-branchen__nervt { padding: 16px 18px 18px; }
+  .pm-branchen__nervt b { font-size: 21px; }
+  .pm-branchen__nervt ul { grid-template-columns: 1fr; gap: 8px; }
+  .pm-branchen__nervt li { font-size: 15.5px; }
+  .pm-branchen__chips { justify-content: center; gap: 8px; }
+  .pm-branchen__chips button { width: calc(25% - 6px); font-size: 13px; padding: 8px 3px 10px; hyphens: auto; }
+  .pm-branchen__ico { width: 62px; height: 62px; }
+}
+@media (prefers-reduced-motion: reduce) { .pm-branchen__chips button { transition: none; } }

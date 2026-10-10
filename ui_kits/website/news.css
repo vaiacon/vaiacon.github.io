@@ -1,0 +1,336 @@
+/* KI-News für KMU: Wochenkopf, Tagesstreifen, Beitragskarten, Archiv.
+   Baut auf den Tokens und sv-*-Klassen auf; nichts hier ändert bestehende Regeln.
+   Vorsilbe nw- . Ohne JavaScript bleibt alles lesbar (Filter ist dann ausgeblendet). */
+
+html { scroll-padding-top: 88px; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+.nw-skip {
+  position: absolute; left: 12px; top: -60px; z-index: 100;
+  padding: 10px 16px; border-radius: var(--radius-pill);
+  background: var(--ink-900); color: var(--cream-50);
+  font-weight: var(--weight-bold); text-decoration: none;
+}
+.nw-skip:focus { top: 12px; }
+
+/* ---------- Wochenkopf ---------- */
+.nw-hero h1.nw-hero__titel {
+  max-width: none;
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.1em 0.45em;
+}
+.nw-hero__kw {
+  font-size: clamp(64px, 17vw, 132px);
+  line-height: 0.9; letter-spacing: -0.05em;
+  color: var(--peach-200);
+}
+.nw-hero__datum {
+  font-size: clamp(22px, 4.2vw, 40px);
+  letter-spacing: -0.02em;
+}
+.nw-hero--archiv .nw-hero__kw { font-size: clamp(56px, 14vw, 104px); }
+.nw-hero__fazit-titel {
+  margin: var(--space-6) 0 6px;
+  font-size: var(--text-kicker); font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-kicker); text-transform: uppercase;
+  color: var(--peach-200);
+}
+.nw-hero__fazit { margin-top: 0; max-width: 56ch; }
+
+/* ---------- Schmaler Wochenkopf (Wochenseiten) ----------
+   Nicht bildschirmhoch wie die übrigen Seiten: Die Beiträge sollen ohne Scrollen
+   sichtbar sein. Platz für die feste Kopfzeile: 82 / 74 / 66px. */
+.nw-kopf {
+  --kopfzeile: 82px;
+  background: var(--grad-terra-hero);
+  color: var(--text-on-terra);
+  padding-top: var(--kopfzeile);
+}
+.nw-kopf__innen {
+  width: min(100%, var(--content-max)); margin: 0 auto;
+  padding: var(--space-5) var(--section-pad-x) var(--space-5);
+  box-sizing: border-box;
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-6);
+}
+.nw-kopf__text { min-width: 0; }
+.nw-kopf__kicker {
+  margin: 0 0 6px;
+  font-size: var(--text-kicker); font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-kicker); text-transform: uppercase;
+  color: var(--peach-200);
+}
+.nw-kopf__titel {
+  margin: 0;
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 0.4em;
+  color: var(--cream-50);
+}
+.nw-kopf__kw {
+  font-size: clamp(40px, 6vw, 64px);
+  line-height: 1; letter-spacing: -0.04em;
+  color: var(--peach-200);
+}
+.nw-kopf__datum { font-size: clamp(18px, 2.4vw, 26px); letter-spacing: -0.01em; }
+.nw-kopf__fazit {
+  margin: 10px 0 0; max-width: 72ch;
+  font-size: 15.5px; line-height: 1.55;
+  color: var(--text-on-terra-soft);
+}
+.nw-kopf__fazit-titel {
+  margin-right: 4px;
+  font-weight: var(--weight-bold); color: var(--peach-200);
+}
+.nw-kopf__bild { flex: 0 0 auto; width: 104px; margin: 0; }
+.nw-kopf__bild img { display: block; width: 100%; height: auto; }
+.nw-liste.sv-section { padding-top: var(--space-6); }
+.nw-liste .sv-wrap { padding-top: 0; }
+.nw-unsichtbar {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+@media (max-width: 1080px) { .nw-kopf { --kopfzeile: 74px; } }
+@media (max-width: 1024px) { .nw-kopf { --kopfzeile: 66px; } }
+
+/* ---------- Tagesstreifen: eine schmale Zeile ---------- */
+.nw-streifen {
+  background: var(--bg-alt);
+  border-bottom: 1px solid var(--border-strong);
+}
+.nw-streifen__innen {
+  width: min(100%, var(--content-max)); margin: 0 auto;
+  padding: 10px var(--section-pad-x);
+  box-sizing: border-box;
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 20px;
+}
+.nw-tage ol {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; flex-wrap: wrap; gap: 4px;
+}
+.nw-tag {
+  position: relative;
+  display: inline-flex; align-items: baseline; gap: 4px;
+  min-height: 34px; padding: 7px 11px; box-sizing: border-box;
+  border-radius: var(--radius-pill);
+  border: 1px solid transparent;
+  color: var(--text-strong); text-decoration: none;
+  font-size: 13.5px; font-weight: var(--weight-bold); line-height: 1.2;
+  transition: background var(--duration-fast) var(--ease-spring);
+}
+.nw-tag__name { font-size: 11.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-body); }
+.nw-tag__zahl { font-size: 13.5px; }
+.nw-tag__anzahl { display: none; }
+a.nw-tag--voll { border-color: var(--border-ink); background: var(--cream-card); padding-right: 22px; }
+a.nw-tag--voll::after {
+  content: ""; position: absolute; right: 10px; top: 50%; width: 6px; height: 6px; margin-top: -3px;
+  border-radius: 50%; background: var(--terra-500);
+}
+a.nw-tag--voll:hover, a.nw-tag--voll:focus-visible { background: var(--peach-100); }
+a.nw-tag--voll:focus-visible { outline: 3px solid var(--terra-500); outline-offset: 2px; }
+.nw-tag--leer { opacity: 0.6; }
+.nw-tag.is-heute { box-shadow: 0 0 0 2px var(--terra-500); opacity: 1; }
+.nw-tag.is-heute .nw-tag__name::after { content: " · heute"; text-transform: none; letter-spacing: 0; }
+.nw-wochenwahl {
+  display: flex; flex-wrap: wrap; gap: 4px 18px;
+  font-size: 14px; font-weight: var(--weight-bold);
+}
+.nw-wochenwahl a { color: var(--terra-600); text-decoration: none; padding: 6px 2px; }
+.nw-wochenwahl a:hover, .nw-wochenwahl a:focus-visible { text-decoration: underline; }
+
+/* ---------- Filter ---------- */
+.nw-filter {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+  margin: 0 0 var(--space-6);
+}
+.nw-filter[hidden] { display: none; }
+.nw-filter__knopf {
+  min-height: 44px; padding: 8px 18px; box-sizing: border-box;
+  border: 2px solid var(--border-ink); border-radius: var(--radius-pill);
+  background: var(--cream-card); color: var(--text-strong);
+  font: inherit; font-size: var(--text-ui); font-weight: var(--weight-bold); cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-spring), color var(--duration-fast) var(--ease-spring);
+}
+.nw-filter__knopf:hover { background: var(--peach-100); }
+.nw-filter__knopf:focus-visible { outline: 3px solid var(--terra-500); outline-offset: 2px; }
+.nw-filter__knopf[aria-pressed="true"] { background: var(--ink-900); color: var(--cream-50); }
+.nw-filter__status { flex-basis: 100%; margin: 4px 0 0; text-align: center; font-size: 14px; color: var(--text-body); min-height: 1.2em; }
+
+/* ---------- Tagesblöcke und Beiträge: Zeitungssatz ----------
+   Keine Karten: Linien statt Rahmen, Serifen-Titel, Felder als Absätze mit
+   Stichwort davor. Ab 900px zwei Spalten; der wichtigste Beitrag und ein
+   Beitrag allein am Tag laufen über die ganze Breite, ihr Text in Spalten. */
+.nw-beitraege {
+  --nw-serif: "Iowan Old Style", "Charter", "Georgia", "Times New Roman", serif;
+  display: grid; gap: var(--space-9); max-width: 1120px; margin: 0 auto;
+}
+.nw-tagesblock { display: grid; gap: var(--space-6) 48px; align-items: start; }
+.nw-tagesblock[hidden] { display: none; }
+.nw-tagesblock__titel {
+  margin: 0; padding: 8px 0 0;
+  border-top: 3px double var(--border-ink);
+  font-size: 12.5px; font-weight: var(--weight-bold);
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-body);
+}
+.nw-zuletzt {
+  margin: var(--space-4) 0 var(--space-5); text-align: center; font-weight: 600; color: var(--text-body);
+}
+.nw-zuletzt a { color: var(--terra-600); }
+.nw-leer {
+  padding: var(--space-6); border: 2px dashed var(--border-strong); border-radius: var(--radius-lg);
+  text-align: center; color: var(--text-body);
+}
+
+
+.nw-karte { text-align: left; padding-top: 14px; border-top: 1px solid var(--border-ink); }
+.nw-karte[hidden] { display: none; }
+.nw-karte:target { outline: 3px solid var(--terra-500); outline-offset: 8px; border-radius: 2px; }
+.nw-karte__kopf { margin-bottom: 10px; }
+.nw-karte__meta {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; margin: 0 0 6px;
+  font-size: 12.5px; font-weight: var(--weight-semibold); color: var(--text-body);
+}
+.nw-karte__titel {
+  margin: 0;
+  font-family: var(--nw-serif); font-weight: 700;
+  font-size: clamp(21px, 2.2vw, 25px); line-height: 1.2; letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.nw-karte__titel a { color: var(--text-strong); text-decoration: none; }
+.nw-karte__titel a:hover, .nw-karte__titel a:focus-visible { text-decoration: underline; text-decoration-color: var(--terra-500); text-decoration-thickness: 2px; }
+.nw-karte__wichtig {
+  font-size: 11px; font-weight: var(--weight-bold); letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--terra-600);
+}
+.nw-abzeichen {
+  font-size: 11px; font-weight: var(--weight-bold); letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--terra-600);
+}
+
+/* Absätze mit Stichwort davor */
+.nw-karte__text, .nw-feld { margin: 0 0 10px; break-inside: avoid; }
+.nw-karte__frage, .nw-feld h4 {
+  display: inline; margin: 0 4px 0 0;
+  font-size: 12px; font-weight: var(--weight-bold); letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--ink-900);
+}
+.nw-karte__text p, .nw-feld p {
+  display: inline; margin: 0;
+  font-size: 15.5px; line-height: 1.55; color: var(--text-body);
+}
+.nw-karte__text p { color: var(--text-strong); }
+.nw-feld--vaiacon h4 { color: var(--terra-600); }
+.nw-feld--achtung { padding-left: 10px; border-left: 3px solid #B07A10; }
+.nw-feld--achtung h4 { color: #6B4500; }
+.nw-feld__link {
+  display: inline; margin-left: 6px;
+  color: var(--terra-600); font-size: 15px; font-weight: var(--weight-bold);
+  text-decoration: underline; text-underline-offset: 3px; white-space: nowrap;
+}
+.nw-feld__link:hover, .nw-feld__link:focus-visible { text-decoration-thickness: 2px; }
+
+.nw-quellen { margin: 4px 0 0; font-size: 13px; line-height: 1.5; color: var(--text-body); break-inside: avoid; }
+.nw-quellen__titel { display: inline; margin: 0 4px 0 0; font-weight: var(--weight-bold); }
+.nw-quellen ul { display: inline; margin: 0; padding: 0; list-style: none; }
+.nw-quellen li { display: inline; }
+.nw-quellen li + li::before { content: " · "; }
+.nw-quellen a { color: var(--terra-600); font-weight: var(--weight-semibold); overflow-wrap: anywhere; }
+.nw-ki-hinweis { margin: 2px 0 0; font-size: 12.5px; font-style: italic; color: var(--text-body); }
+.nw-ki-hinweis a { color: inherit; text-decoration: underline; }
+
+/* Wichtigster Beitrag: Aufmacher */
+.nw-karte--gross { border-top: 3px solid var(--border-ink); }
+.nw-karte--gross .nw-karte__titel { font-size: clamp(26px, 3.4vw, 38px); line-height: 1.12; }
+.nw-karte--gross .nw-karte__text p { font-size: 17px; }
+
+@media (min-width: 900px) {
+  .nw-tagesblock { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .nw-tagesblock__titel,
+  .nw-karte--gross,
+  .nw-karte--breit { grid-column: 1 / -1; }
+  .nw-karte--gross .nw-karte__inhalt,
+  .nw-karte--breit .nw-karte__inhalt { column-count: 2; column-gap: 48px; column-rule: 1px solid var(--border-strong); }
+}
+@media (min-width: 1100px) {
+  .nw-karte--gross .nw-karte__inhalt { column-count: 3; }
+}
+
+/* ---------- Archiv ---------- */
+.nw-archiv__liste { list-style: none; margin: 0 auto; padding: 0; max-width: 860px; display: grid; gap: var(--space-6); }
+.nw-archiv__woche { padding: var(--space-6); background: var(--cream-card); border: 2px solid var(--border-ink); border-radius: var(--radius-lg); }
+.nw-archiv__titel { margin: 0 0 8px; font-size: clamp(22px, 4vw, 30px); letter-spacing: -0.02em; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+.nw-archiv__titel a { color: var(--text-strong); text-decoration: none; }
+.nw-archiv__titel a:hover, .nw-archiv__titel a:focus-visible { text-decoration: underline; text-decoration-color: var(--terra-500); }
+.nw-archiv__fazit { margin: 0 0 12px; color: var(--text-body); line-height: var(--leading-body); }
+.nw-archiv__beitraege { margin: 12px 0 0; padding-left: 20px; display: grid; gap: 4px; }
+.nw-archiv__beitraege a { color: var(--terra-600); font-weight: var(--weight-semibold); padding: 4px 0; display: inline-block; }
+
+/* ---------- Schluss ---------- */
+.nw-schluss__links { margin: var(--space-6) 0 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 14px; font-weight: var(--weight-bold); }
+.nw-schluss__links a { color: var(--cream-50); padding: 6px 2px; }
+.nw-schluss__ki { margin: var(--space-4) auto 0; max-width: 46ch; font-size: 14px; color: var(--cream-50); opacity: .85; }
+.nw-schluss__ki a { color: inherit; text-decoration: underline; }
+
+@media (prefers-reduced-motion: reduce) {
+  .nw-tag, .nw-filter__knopf { transition: none; }
+  .nw-hero .sv-hero__robot img { animation: none; }
+}
+
+/* Schmaler Wochenkopf, Handy: am Ende, damit es die Grundregeln oben schlägt */
+@media (max-width: 599px) {
+  .nw-kopf__bild { display: none; }
+  .nw-kopf__fazit { font-size: 14.5px; }
+  .nw-zuletzt { margin: 0 0 var(--space-4); font-size: 14.5px; }
+  /* Filter in einer Zeile zum Wischen, damit der erste Beitrag früher kommt */
+  .nw-filter {
+    flex-wrap: nowrap; justify-content: flex-start;
+    overflow-x: auto; scrollbar-width: none;
+    margin-inline: -20px; padding: 2px 20px;   /* sv-wrap hat auf dem Handy 20px Rand */
+  }
+  .nw-filter::-webkit-scrollbar { display: none; }
+  .nw-filter__knopf { flex: 0 0 auto; padding: 8px 14px; }
+  .nw-filter__status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  /* Kalender in einer Zeile zum Wischen */
+  .nw-streifen__innen { padding: 8px 20px; gap: 6px; }
+  .nw-tage { width: calc(100% + 40px); margin-inline: -20px; overflow-x: auto; scrollbar-width: none; }
+  .nw-tage::-webkit-scrollbar { display: none; }
+  .nw-tage ol { flex-wrap: nowrap; padding: 2px 20px; }
+  .nw-tag { flex: 0 0 auto; min-height: 32px; padding: 6px 9px; }
+  a.nw-tag--voll { padding-right: 19px; }
+  a.nw-tag--voll::after { right: 8px; }
+  .nw-tag.is-heute .nw-tag__name::after { content: none; }
+  .nw-wochenwahl { font-size: 13px; }
+  .nw-wochenwahl a { padding: 2px; }
+  .nw-karte__text p, .nw-feld p { font-size: 15px; }
+}
+
+/* Übersicht und Redaktion (07.10.2026): /ki-kmu-news/ zeigt Anrisse statt einer Kopie der Woche. */
+.nw-kopf--uebersicht .nw-kopf__innen { align-items: flex-end; padding-bottom: var(--space-6); }
+.nw-kopf__titel--uebersicht {
+  display: block; max-width: 24ch;
+  font-size: clamp(30px, 3.8vw, 46px); line-height: 1.08; letter-spacing: -0.025em;
+}
+.nw-kopf__titel-zeile { color: var(--peach-200); }
+.nw-kopf__lead {
+  margin: 14px 0 0; max-width: 58ch;
+  font-size: clamp(16px, 1.3vw, 18px); line-height: 1.5;
+  color: var(--text-on-terra-soft);
+}
+.nw-kopf__fazit--kasten {
+  margin-top: 18px; padding: 12px 16px; max-width: 64ch;
+  background: rgba(255, 255, 255, .10); border-left: 3px solid var(--peach-200); border-radius: 0 8px 8px 0;
+  color: var(--cream-50);
+}
+.nw-kopf__fazit--kasten .nw-kopf__fazit-titel { display: block; margin: 0 0 2px; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; }
+.nw-kopf--uebersicht .nw-kopf__bild { width: 168px; }
+@media (max-width: 720px) { .nw-kopf__titel--uebersicht { max-width: none; } .nw-kopf__fazit--kasten { max-width: none; } }
+.nw-karte--anriss .nw-karte__anriss { margin: 8px 0 10px; color: var(--text-body); line-height: var(--leading-body); }
+.nw-tagesblock__titel a { color: var(--terra-600); text-transform: none; letter-spacing: 0; }
+.nw-wochen__liste { list-style: none; margin: 12px 0 0; padding: 0; }
+.nw-wochen__liste li { display: flex; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border-ink); }
+.nw-wochen__liste a { font-weight: var(--weight-bold); color: var(--terra-600); }
+.nw-wochen__zahl { color: var(--text-body); font-size: 14px; white-space: nowrap; }
+.nw-redaktion { padding-top: 0; }
+.nw-redaktion .sv-wrap { border-top: 3px double var(--border-ink); padding-top: 14px; }
+.nw-redaktion__titel { margin: 0 0 6px; font-size: 12.5px; font-weight: var(--weight-bold); letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-body); }
+.nw-redaktion__text { margin: 0; max-width: 72ch; font-size: 14.5px; color: var(--text-body); line-height: var(--leading-body); }
+.nw-redaktion__text a { color: var(--terra-600); }
+.nw-wochen__links { margin: var(--space-4) 0 0; display: flex; flex-wrap: wrap; gap: 6px 14px; font-weight: var(--weight-bold); }
+.nw-wochen__links a { color: var(--terra-600); }
+.nw-redaktion .sv-wrap, .nw-wochen .sv-wrap { text-align: left; }
