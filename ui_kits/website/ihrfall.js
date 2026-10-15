@@ -2,9 +2,10 @@
  * Die Einordnung (Sprosse, Richtpreis) kommt seit 10.10.2026 NUR per E-Mail an die
  * Kundschaft, die Seite zeigt nur die Bestätigung (Philip: «wir wollen den Kontakt»).
  *
- * POST /api/offerte/einordnen { wunsch, kontakt:{mail, telefon} } →
+ * POST /api/offerte/einordnen { wunsch, kontakt:{name, mail, telefon} } →
  *   { gemeldet, gesendet, kennung }; zu kurz/ungültig 400 { error:'eingabe', feld }.
  *
+ * Name, E-Mail und Telefon sind Pflicht (André 15.10.2026).
  * Die Beschreibung wird nirgends gespeichert.
  * Probe: ?probe=1 liest .bau/proben/einordnen-antwort.json, sendet nichts; ?probe=fehler zeigt den Fehlerfall. */
 (function () {
@@ -20,7 +21,7 @@
   var $ = function (id) { return document.getElementById(id); };
   var text = $('if-text'), n = $('if-n'), knopf = $('if-knopf'), fehler = $('if-fehler');
   var danke = $('if-danke'), dankeMail = $('if-danke-mail');
-  var kontakt = $('if-kontakt'), mailFeld = $('if-mail'), telFeld = $('if-telefon');
+  var kontakt = $('if-kontakt'), nameFeld = $('if-name'), mailFeld = $('if-mail'), telFeld = $('if-telefon');
   var RE_MAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   var probe = '';
   try { probe = new URLSearchParams(location.search).get('probe') || ''; } catch (e) { /* ohne */ }
@@ -81,15 +82,17 @@
     if (kontakt && kontakt.hidden) {
       kontakt.hidden = false;
       zustand('kontakt');
-      if (mailFeld) mailFeld.focus();
+      if (nameFeld) nameFeld.focus();
       return;
     }
+    var name = nameFeld ? nameFeld.value.trim() : '';
     var mail = mailFeld ? mailFeld.value.trim() : '';
     var telefon = telFeld ? telFeld.value.trim() : '';
+    if (name.length < 2) { zeigeFehler('Bitte geben Sie Ihren Namen an.'); if (nameFeld) nameFeld.focus(); return; }
     if (!RE_MAIL.test(mail)) { zeigeFehler('Bitte geben Sie eine gültige E-Mail-Adresse an.'); if (mailFeld) mailFeld.focus(); return; }
     if (telefon.replace(/\D/g, '').length < 6) { zeigeFehler('Bitte geben Sie Ihre Telefonnummer an.'); if (telFeld) telFeld.focus(); return; }
     zustand('laedt');
-    anfrage(wunsch, { mail: mail, telefon: telefon }).then(function (a) {
+    anfrage(wunsch, { name: name, mail: mail, telefon: telefon }).then(function (a) {
       if (!a || !a.gemeldet) {
         zustand('fehler');
         zeigeFehler(FEHLER_TEXT);
@@ -103,7 +106,7 @@
     }).catch(function (err) {
       zustand('fehler');
       zeigeFehler(err && err.message === 'eingabe'
-        ? 'Bitte prüfen Sie Beschreibung, E-Mail und Telefon.'
+        ? 'Bitte prüfen Sie Beschreibung, Name, E-Mail und Telefon.'
         : FEHLER_TEXT);
     });
   });

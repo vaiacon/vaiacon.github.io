@@ -4,7 +4,7 @@
 > Neu schreiben mit `python3 scripts/bot_wissen.py` im Website-Repo.
 > Änderungen von Hand gehen beim nächsten Lauf verloren — ändere die
 > Website, nicht diese Datei.
-> Stand: 11.10.2026 · Eintrag 07eea26 Preislogik 2026-10-11 live: ein Katalog, Online-Kurs 1'450, Branche Immobilien, Lernreise-Ziel
+> Stand: 11.10.2026 · Eintrag 240c8fc Vorschau (Stand 14f5518)
 
 ## Wie du antwortest
 
@@ -626,7 +626,7 @@ Ab-Preise sind Fixpreise nach der Erstanalyse, nie offen nach oben. Der kleinste
 Bausteine
 Jede Automation besteht aus fünf Teilen: Etwas kommt rein, die KI versteht es, es wird entschieden, etwas passiert, Sie erfahren davon.
 Ihr Fall
-Auf der Seite beschreiben Sie Ihren Fall in zwei Sätzen und geben E-Mail und Telefon an. Die Einordnung kommt per E-Mail, nicht auf der Seite: welche Sprosse es ist, ob ein Standard reicht oder die Lösung individuell wird, und ein Richtpreis. Die Beschreibung wird nicht gespeichert.
+Auf der Seite beschreiben Sie Ihren Fall in zwei Sätzen und geben Name, E-Mail und Telefon an. Die Einordnung kommt per E-Mail, nicht auf der Seite: welche Sprosse es ist, ob ein Standard reicht oder die Lösung individuell wird, und ein Richtpreis. Die Beschreibung wird nicht gespeichert.
 Region
 Gesamte Deutschschweiz
 BAUSTEINE
@@ -708,11 +708,12 @@ IHR FALL
 Ihr Fall in zwei Sätzen.
 Beschreiben Sie, was bei Ihnen jede Woche Zeit frisst. Unsere Einordnung bekommen Sie per E-Mail: welche Sprosse das ist, ob ein Standard reicht oder es individuell wird, und was es ungefähr kostet.
 1 Beschreiben
-2 E-Mail und Telefon
+2 Name, E-Mail und Telefon
 3 Einordnung mit Richtpreis per E-Mail
 Was frisst bei Ihnen Zeit?
-Ohne Namen und Kundendaten, bitte
-An diese Adresse schicken wir die Einordnung. Die Telefonnummer brauchen wir, falls etwas unklar ist:
+Hier ohne Namen und Kundendaten, bitte
+Die Einordnung schicken wir an Ihre E-Mail. Die Telefonnummer brauchen wir, falls etwas unklar ist:
+Name
 E-Mail
 Telefon
 0 Zeichen, mindestens 20
