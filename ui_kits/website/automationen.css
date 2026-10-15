@@ -477,7 +477,6 @@
 .if__kontakt-satz { margin: 0; font-size: 15px; font-weight: var(--weight-semibold); color: var(--text-strong); }
 .if__felder { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .if__feld { display: grid; gap: 5px; }
-.if__feld--breit { grid-column: 1 / -1; }
 .if__feld span { font-size: var(--text-overline, 12px); letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); font-family: var(--font-mono, "IBM Plex Mono", monospace); }
 .if__feld input { width: 100%; box-sizing: border-box; padding: 12px 14px; font: inherit; font-size: 16px; color: var(--text-strong); background: var(--cream-50); border: 1.5px solid var(--sand-300); border-radius: var(--radius-sm, 12px); }
 .if__feld input:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-color: var(--border-ink); background: #fff; }
