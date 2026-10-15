@@ -43,7 +43,15 @@ dem Server, Kundenakten bleiben lokal.
 ⛔ Einmal eingecheckt heisst für immer drin: die Historie lässt sich nur mit
 `--force` säubern, und das ist verboten. Also vorher schauen.
 
-## Dieses Repo: die Website vaiacon.ch
+## ⚠️ Dieses Repo ist nur die Vorschau-Kopie
+
+`vaiacon/vaiacon.github.io` ist eine **Vorschau** auf GitHub Pages, ab und zu als
+«Vorschau (Stand …)» aus `vaiacon/vaiacon` übernommen. **vaiacon.ch kommt aus
+`vaiacon/vaiacon`.** Was hier geändert wird, geht nicht live und wird bei der
+nächsten Übernahme überschrieben. Änderungen an der Website also immer in
+`vaiacon/vaiacon` machen. Der Rest dieser Datei beschreibt jenes Repo.
+
+## Die Website vaiacon.ch
 
 Statische Seite, Inhalt liegt in der Wurzel. Es hängt **kein** Webhook daran und
 trotzdem geht ein Push live: der Server holt sich den Stand alle zwei Minuten
